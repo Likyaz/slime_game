@@ -1,0 +1,72 @@
+from entities.entity import Entity
+from systems.physics import PhysicsEntity, Vector, CircleSurface, RectSurface, RotatedRectSurface
+from systems.graphic import GraphicEntity
+from systems.action_controllers.ia_action_controller import AIActionController
+from systems.action_controllers.player_action_controller import PlayerActionController
+from entities.entity_type import EntityType
+from systems.ia_components.slime_ia import SlimeIA
+import settings
+
+
+class EntityFactory:
+    # ======= PLAYER ENTITIES =======
+    @staticmethod
+    def create_player(x: float, y: float):
+        return Entity(
+            physics_entity=PhysicsEntity(position=Vector(x, y), surface=CircleSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=40),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleSurface(radius=settings.ENTITY_RADIUS), color=(0, 255, 0), z_index=100),
+            action_controller=PlayerActionController(),
+            entity_type=EntityType.PLAYER
+        )
+
+    # ======= IA ENTITIES =======
+    @staticmethod
+    def create_slime(x: float, y: float):
+        return Entity(
+            physics_entity=PhysicsEntity(position=Vector(x, y), surface=CircleSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=1),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleSurface(radius=settings.ENTITY_RADIUS), color=(255, 0, 0), z_index=90),
+            action_controller=AIActionController(SlimeIA()),
+            # action_system=AliveActionSystem()
+            entity_type=EntityType.SLIME
+        )
+
+
+    # ======= VISUAL ENTITIES =======
+    @staticmethod
+    def create_visual_rect(x: float, y: float, width: float = 10, height: float = 10):
+        return Entity(
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectSurface(width=width, height=height), color=(255, 0, 255), z_index=95),
+            entity_type=EntityType.VISUAL
+        )
+    
+    @staticmethod
+    def create_visual_circle(x: float, y: float, radius: float = 10):
+        return Entity(
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleSurface(radius=radius), color=(0, 0, 255), z_index=85),
+            entity_type=EntityType.VISUAL
+        )
+
+    # ======= SOLID ENTITIES =======
+    @staticmethod
+    def create_solid_rect(x: float, y: float, width: float = 10, height: float = 10) -> list[Entity]:
+        return Entity(
+            physics_entity=PhysicsEntity(position=Vector(x, y), surface=RectSurface(width=width, height=height), fixed=True),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectSurface(width=width, height=height), color=(255, 0, 255)),
+            entity_type=EntityType.SOLID
+        )
+
+
+    @staticmethod
+    def create_solid_rotated_rect_list(x: float, y: float, width: float = 10, height: float = 10, rotation: float = 45) -> list[Entity]:
+        return Entity(
+            physics_entity=PhysicsEntity(position=Vector(x, y), surface=RotatedRectSurface(width=width, height=height, rotation=rotation), fixed=True),
+            entity_type=EntityType.SOLID
+        )
+
+    @staticmethod
+    def create_solid_circle(x: float, y: float, radius: float = 10):
+        return Entity(
+            physics_entity=PhysicsEntity(position=Vector(x, y), surface=CircleSurface(radius=radius), fixed=False),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleSurface(radius=radius), color=(0, 0, 255)),
+            entity_type=EntityType.SOLID
+        )
