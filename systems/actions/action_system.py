@@ -32,7 +32,6 @@ class ActionSystemManager:
             if entity.action_controller and isinstance(entity.action_controller, ActionController):
                 entity_action = entity.action_controller.get_action()
                 entity.entity_action = entity_action
-                print(entity.entity_action)
 
             entity.action_system.apply_action(dt, entity)
 

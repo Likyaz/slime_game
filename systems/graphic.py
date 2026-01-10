@@ -1,14 +1,36 @@
 import math
 from dataclasses import dataclass
+from abc import ABC
+
 import pygame
 
-import settings
-from systems.utils_surface import Vector, Surface, RectSurface, CircleSurface, RotatedRectSurface
+from systems.vector import Vector
+
+
+class GraphicSurface(ABC):
+    pass
+
+@dataclass(frozen=True)
+class RectGraphicSurface(GraphicSurface):
+    width: float
+    height: float
+
+
+@dataclass(frozen=True)
+class RotatedRectGraphicSurface(GraphicSurface):
+    width: float
+    height: float
+    rotation: float
+
+@dataclass(frozen=True)   
+class CircleGraphicSurface(GraphicSurface):
+    radius: float
+
 
 @dataclass(slots=True)
 class GraphicEntity:
     position: Vector
-    surface: Surface
+    surface: GraphicSurface
     z_index: int = 1
     color: tuple[int, int, int] = (255, 255, 255)
 
@@ -29,9 +51,9 @@ class GraphicSystem:
 
     def draw_all(self, screen: pygame.Surface) -> None:
         for entity in self.entities:
-            if isinstance(entity.surface, CircleSurface):
+            if isinstance(entity.surface, CircleGraphicSurface):
                 pygame.draw.circle(screen, entity.color, entity.position.to_tuple(), entity.surface.radius)
-            elif isinstance(entity.surface, RectSurface):
+            elif isinstance(entity.surface, RectGraphicSurface):
                 rect = pygame.Rect(
                     int(entity.position.x - entity.surface.width / 2),
                     int(entity.position.y - entity.surface.height / 2),
@@ -39,7 +61,7 @@ class GraphicSystem:
                     int(entity.surface.height),
                 )
                 pygame.draw.rect(screen, entity.color, rect)
-            elif isinstance(entity.surface, RotatedRectSurface):
+            elif isinstance(entity.surface, RotatedRectGraphicSurface):
                 hw = entity.surface.width / 2
                 hh = entity.surface.height / 2
                 angle = entity.surface.rotation

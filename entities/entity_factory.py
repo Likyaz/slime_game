@@ -1,6 +1,7 @@
 from entities.entity import Entity
-from systems.physics import PhysicsEntity, Vector, CircleSurface, RectSurface, RotatedRectSurface
-from systems.graphic import GraphicEntity
+from systems.vector import Vector
+from systems.physics import PhysicEntity, CirclePhysicSurface, RectPhysicSurface, RotatedRectPhysicSurface
+from systems.graphic import GraphicEntity, CircleGraphicSurface, RectGraphicSurface, RotatedRectGraphicSurface
 from systems.actions.action_controller import PlayerActionController, AIActionController
 from systems.actions.action_system import AliveActionSystem
 from entities.entity_type import EntityType
@@ -13,8 +14,8 @@ class EntityFactory:
     @staticmethod
     def create_player(x: float, y: float):
         return Entity(
-            physics_entity=PhysicsEntity(position=Vector(x, y), surface=CircleSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=40),
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleSurface(radius=settings.ENTITY_RADIUS), color=(0, 255, 0), z_index=100),
+            physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePhysicSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=40),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleGraphicSurface(radius=settings.ENTITY_RADIUS), color=(0, 255, 0), z_index=100),
             action_controller=PlayerActionController(),
             action_system=AliveActionSystem,
             entity_type=EntityType.PLAYER
@@ -24,8 +25,8 @@ class EntityFactory:
     @staticmethod
     def create_slime(x: float, y: float):
         return Entity(
-            physics_entity=PhysicsEntity(position=Vector(x, y), surface=CircleSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=1),
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleSurface(radius=settings.ENTITY_RADIUS), color=(255, 0, 0), z_index=90),
+            physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePhysicSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=1),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleGraphicSurface(radius=settings.ENTITY_RADIUS), color=(255, 0, 0), z_index=90),
             action_controller=AIActionController(SlimeIA()),
             action_system=AliveActionSystem,
             entity_type=EntityType.SLIME
@@ -36,14 +37,14 @@ class EntityFactory:
     @staticmethod
     def create_visual_rect(x: float, y: float, width: float = 10, height: float = 10):
         return Entity(
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectSurface(width=width, height=height), color=(255, 0, 255), z_index=95),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectGraphicSurface(width=width, height=height), color=(255, 0, 255), z_index=95),
             entity_type=EntityType.VISUAL
         )
     
     @staticmethod
     def create_visual_circle(x: float, y: float, radius: float = 10):
         return Entity(
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleSurface(radius=radius), color=(0, 0, 255), z_index=85),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleGraphicSurface(radius=radius), color=(0, 0, 255), z_index=85),
             entity_type=EntityType.VISUAL
         )
 
@@ -51,8 +52,8 @@ class EntityFactory:
     @staticmethod
     def create_solid_rect(x: float, y: float, width: float = 10, height: float = 10) -> list[Entity]:
         return Entity(
-            physics_entity=PhysicsEntity(position=Vector(x, y), surface=RectSurface(width=width, height=height), fixed=True),
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectSurface(width=width, height=height), color=(255, 0, 255)),
+            physics_entity=PhysicEntity(position=Vector(x, y), surface=RectPhysicSurface(width=width, height=height), fixed=True),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectGraphicSurface(width=width, height=height), color=(255, 0, 255)),
             entity_type=EntityType.SOLID
         )
 
@@ -60,14 +61,14 @@ class EntityFactory:
     @staticmethod
     def create_solid_rotated_rect_list(x: float, y: float, width: float = 10, height: float = 10, rotation: float = 45) -> list[Entity]:
         return Entity(
-            physics_entity=PhysicsEntity(position=Vector(x, y), surface=RotatedRectSurface(width=width, height=height, rotation=rotation), fixed=True),
+            physics_entity=PhysicEntity(position=Vector(x, y), surface=RotatedRectPhysicSurface(width=width, height=height, rotation=rotation), fixed=True),
             entity_type=EntityType.SOLID
         )
 
     @staticmethod
     def create_solid_circle(x: float, y: float, radius: float = 10):
         return Entity(
-            physics_entity=PhysicsEntity(position=Vector(x, y), surface=CircleSurface(radius=radius), fixed=False),
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleSurface(radius=radius), color=(0, 0, 255)),
+            physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePhysicSurface(radius=radius), fixed=False),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleGraphicSurface(radius=radius), color=(0, 0, 255)),
             entity_type=EntityType.SOLID
         )

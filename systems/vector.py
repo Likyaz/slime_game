@@ -1,7 +1,5 @@
 import math
 import random
-from abc import ABC
-from dataclasses import dataclass
 from typing import Union
 
 class Vector:
@@ -73,22 +71,3 @@ class Vector:
 
     def __str__(self) -> str:
         return f"Vector({self.x}, {self.y})"
-
-class Surface(ABC):
-    pass
-
-@dataclass(frozen=True)
-class RectSurface(Surface):
-    width: float
-    height: float
-
-
-@dataclass(frozen=True)
-class RotatedRectSurface(Surface):
-    width: float
-    height: float
-    rotation: float
-
-@dataclass(frozen=True)   
-class CircleSurface(Surface):
-    radius: float

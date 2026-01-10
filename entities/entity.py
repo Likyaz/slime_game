@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Type
 
-from systems.physics import PhysicsEntity
+from systems.physics import PhysicEntity
 from systems.graphic import GraphicEntity
 from systems.items import InventoryComponent
 from systems.actions.action_controller import ActionController
@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class Entity:
     def __init__(
         self,
-        physics_entity: PhysicsEntity = None,
+        physics_entity: PhysicEntity = None,
         graphic_entity: GraphicEntity = None,
         # inventory_component: InventoryComponent = None,
         action_controller: ActionController = None,

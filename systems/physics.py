@@ -1,30 +1,49 @@
 from collections import defaultdict
 from dataclasses import dataclass
 import math
-
+from abc import ABC
 
 import settings
-from systems.utils_surface import Vector, Surface, RectSurface, CircleSurface, RotatedRectSurface
+from systems.vector import Vector
+
+class PhysicSurface(ABC):
+    pass
+
+@dataclass(frozen=True)
+class RectPhysicSurface(PhysicSurface):
+    width: float
+    height: float
+
+
+@dataclass(frozen=True)
+class RotatedRectPhysicSurface(PhysicSurface):
+    width: float
+    height: float
+    rotation: float
+
+@dataclass(frozen=True)   
+class CirclePhysicSurface(PhysicSurface):
+    radius: float
 
 
 @dataclass(slots=True)   
-class PhysicsEntity:
+class PhysicEntity:
     position: Vector
-    surface: Surface
+    surface: PhysicSurface
     vel: Vector = Vector.zero()
     acc: Vector = Vector.zero()
     mass: float = 1.0
     fixed: bool = False
 
     def aabb(self) -> tuple[float, float, float, float]:
-        if isinstance(self.surface, RectSurface):
+        if isinstance(self.surface, RectPhysicSurface):
             return (
                 self.position.x - self.surface.width / 2,
                 self.position.y - self.surface.height / 2,
                 self.position.x + self.surface.width / 2,
                 self.position.y + self.surface.height / 2
             )
-        elif isinstance(self.surface, CircleSurface):
+        elif isinstance(self.surface, CirclePhysicSurface):
             return (
                 self.position.x - self.surface.radius,
                 self.position.y - self.surface.radius,
@@ -32,25 +51,25 @@ class PhysicsEntity:
                 self.position.y + self.surface.radius
             )   
         else:
-            raise ValueError(f"Unsupported surface type: {type(self.surface)}")
+            raise ValueError(f"Unsupported physic surface type: {type(self.surface)}")
 
 
-class PhysicsSystem:
-    def __init__(self, entities: list[PhysicsEntity]=None):
+class PhysicSystem:
+    def __init__(self, entities: list[PhysicEntity]=None):
         self.entities = entities or []
 
     def sort_entities(self) -> None:
         self.entities.sort(key=lambda x: (x.fixed, x.mass * -1))
 
-    def add_entity(self, entity: PhysicsEntity) -> None:
+    def add_entity(self, entity: PhysicEntity) -> None:
         self.entities.append(entity)
         self.sort_entities()
 
-    def add_entities(self, entities: list[PhysicsEntity]) -> None:
+    def add_entities(self, entities: list[PhysicEntity]) -> None:
         self.entities.extend(entities)
         self.sort_entities()
 
-    def remove_entity(self, entity: PhysicsEntity) -> None:
+    def remove_entity(self, entity: PhysicEntity) -> None:
         self.entities.remove(entity)
 
     def update_all(self, dt: float) -> None:
@@ -94,7 +113,6 @@ class PhysicsSystem:
 
     def resolve_collisions(self) -> None:
         potential_pairs = self.find_potential_pairs()
-        print(len(potential_pairs))
         for _ in range(settings.COLLISION_RESOLUTION_ITERATIONS):
 
             corrections = defaultdict(Vector)
@@ -118,47 +136,47 @@ class PhysicsSystem:
                 if not self.entities[i].fixed:
                     self.entities[i].position += correction
 
-    def _select_collision_resolution(self, entity1: PhysicsEntity, entity2: PhysicsEntity) -> Vector:
+    def _select_collision_resolution(self, entity1: PhysicEntity, entity2: PhysicEntity) -> Vector:
                 surface_set = {type(entity1.surface), type(entity2.surface)}
                 if len(surface_set) == 1:
-                    if CircleSurface in surface_set:
+                    if CirclePhysicSurface in surface_set:
                         return self._resolve_circle_vs_circle(entity1, entity2)
-                    elif RectSurface in surface_set:
+                    elif RectPhysicSurface in surface_set:
                         return self._resolve_rect_vs_rect(entity1, entity2)
-                    elif RotatedRectSurface in surface_set:
+                    elif RotatedRectPhysicSurface in surface_set:
                         return self._resolve_rotated_rect_vs_rotated_rect(entity1, entity2)
                     else:
                         raise ValueError(f"Unsupported surface type: {entity1.surface} and {entity2.surface}")
                 else:
-                    if CircleSurface in surface_set and RectSurface in surface_set:
-                        if isinstance(entity1.surface, CircleSurface):
+                    if CirclePhysicSurface in surface_set and RectPhysicSurface in surface_set:
+                        if isinstance(entity1.surface, CirclePhysicSurface):
                             return self._resolve_circle_vs_rect(entity1, entity2)
                         else:
                             return self._resolve_circle_vs_rect(entity2, entity1) * -1
-                    elif CircleSurface in surface_set and RotatedRectSurface in surface_set:
-                        if isinstance(entity1.surface, CircleSurface):
+                    elif CirclePhysicSurface in surface_set and RotatedRectPhysicSurface in surface_set:
+                        if isinstance(entity1.surface, CirclePhysicSurface):
                             return self._resolve_circle_vs_rotated_rect(entity1, entity2)
                         else:
                             return self._resolve_circle_vs_rotated_rect(entity2, entity1) * -1
-                    elif RectSurface in surface_set and RotatedRectSurface in surface_set:
-                        if isinstance(entity1.surface, RectSurface):
+                    elif RectPhysicSurface in surface_set and RotatedRectPhysicSurface in surface_set:
+                        if isinstance(entity1.surface, RectPhysicSurface):
                             return self._resolve_rect_vs_rotated_rect(entity1, entity2)
                         else:
                             return self._resolve_rect_vs_rotated_rect(entity2, entity1) * -1
                     else:
                         raise ValueError(f"Unsupported surface type: {entity1.surface} and {entity2.surface}")
 
-    def _resolve_rect_vs_rotated_rect(self, entity1: PhysicsEntity, entity2: PhysicsEntity) -> None:
+    def _resolve_rect_vs_rotated_rect(self, entity1: PhysicEntity, entity2: PhysicEntity) -> None:
         def dot(a: Vector, b: Vector) -> float:
             return a.x * b.x + a.y * b.y
 
-        def get_axes(entity: PhysicsEntity) -> tuple[Vector, Vector]:
-            angle = entity.surface.rotation if isinstance(entity.surface, RotatedRectSurface) else 0
+        def get_axes(entity: PhysicEntity) -> tuple[Vector, Vector]:
+            angle = entity.surface.rotation if isinstance(entity.surface, RotatedRectPhysicSurface) else 0
             cos_a = math.cos(angle)
             sin_a = math.sin(angle)
             return (Vector(cos_a, sin_a), Vector(-sin_a, cos_a))
 
-        def get_extent(axis: Vector, entity: PhysicsEntity) -> float:
+        def get_extent(axis: Vector, entity: PhysicEntity) -> float:
             hw = entity.surface.width / 2
             hh = entity.surface.height / 2
             ax1, ax2 = get_axes(entity)
@@ -187,7 +205,7 @@ class PhysicsSystem:
             return penetration
         return Vector.zero()
 
-    def _resolve_circle_vs_rotated_rect(self, entity1: PhysicsEntity, entity2: PhysicsEntity) -> Vector:
+    def _resolve_circle_vs_rotated_rect(self, entity1: PhysicEntity, entity2: PhysicEntity) -> Vector:
         circle, rect = entity1, entity2
         angle = rect.surface.rotation
         cos_a = math.cos(angle)
@@ -224,17 +242,17 @@ class PhysicsSystem:
             return penetration
         return Vector.zero()
 
-    def _resolve_rotated_rect_vs_rotated_rect(self, entity1: PhysicsEntity, entity2: PhysicsEntity) -> Vector:
+    def _resolve_rotated_rect_vs_rotated_rect(self, entity1: PhysicEntity, entity2: PhysicEntity) -> Vector:
         def dot(a: Vector, b: Vector) -> float:
             return a.x * b.x + a.y * b.y
 
-        def get_axes(entity: PhysicsEntity) -> tuple[Vector, Vector]:
-            angle = entity.surface.rotation if isinstance(entity.surface, RotatedRectSurface) else 0
+        def get_axes(entity: PhysicEntity) -> tuple[Vector, Vector]:
+            angle = entity.surface.rotation if isinstance(entity.surface, RotatedRectPhysicSurface) else 0
             cos_a = math.cos(angle)
             sin_a = math.sin(angle)
             return (Vector(cos_a, sin_a), Vector(-sin_a, cos_a))
 
-        def get_extent(axis: Vector, entity: PhysicsEntity) -> float:
+        def get_extent(axis: Vector, entity: PhysicEntity) -> float:
             hw = entity.surface.width / 2
             hh = entity.surface.height / 2
             ax1, ax2 = get_axes(entity)
@@ -263,7 +281,7 @@ class PhysicsSystem:
             return penetration
         return Vector.zero()
 
-    def _resolve_circle_vs_circle(self, entity1: PhysicsEntity, entity2: PhysicsEntity) -> Vector:
+    def _resolve_circle_vs_circle(self, entity1: PhysicEntity, entity2: PhysicEntity) -> Vector:
         r = entity1.surface.radius + entity2.surface.radius
         dx = entity1.position.x - entity2.position.x
         dy = entity1.position.y - entity2.position.y
@@ -279,7 +297,7 @@ class PhysicsSystem:
             return normal * penetration
         return Vector.zero()
     
-    def _resolve_rect_vs_rect(self, entity1: PhysicsEntity, entity2: PhysicsEntity) -> Vector:
+    def _resolve_rect_vs_rect(self, entity1: PhysicEntity, entity2: PhysicEntity) -> Vector:
         dx = entity2.position.x - entity1.position.x
         px = (entity1.surface.width / 2 + entity2.surface.width / 2) - abs(dx)
         dy = entity2.position.y - entity1.position.y
@@ -293,7 +311,7 @@ class PhysicsSystem:
             return penetration
         return Vector.zero()
 
-    def _resolve_circle_vs_rect(self, circle: PhysicsEntity, rect: PhysicsEntity) -> Vector:
+    def _resolve_circle_vs_rect(self, circle: PhysicEntity, rect: PhysicEntity) -> Vector:
         cx, cy = circle.position.x, circle.position.y
 
         half_w = rect.surface.width / 2
@@ -336,12 +354,3 @@ class PhysicsSystem:
             correction = normal * penetration
             return correction
 
-        # if dist_sq <= (r * r):
-        #     distance = math.sqrt(dist_sq)
-        #     if distance == 0:
-        #         normal = Vector.random_unit_vector()
-        #     else:
-        #         normal = Vector(dx/distance, dy/distance)
-        #     penetration = r - distance
-        #     return normal * penetration
-        # return Vector.zero()
