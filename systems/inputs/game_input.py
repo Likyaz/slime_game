@@ -22,7 +22,7 @@ class GameActionInput(ActionInput):
 
 class GameInput(InputContext):
     @staticmethod
-    def handle(raw_input: RawInput) -> ActionInput:
+    def handle(raw_input: RawInput) -> GameActionInput:
         keys = raw_input.keys   
         move = Vector(0, 0)
         if keys[GameKey.LEFT]:

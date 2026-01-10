@@ -9,17 +9,17 @@ class Scene(ABC):
         self.next_scene: str | None = None
 
     @abstractmethod
-    def handle_events(self):
+    def handle_events(self, raw_input: RawInput) -> None:
         """Gère les inputs, convertit en actions"""
         pass
 
     @abstractmethod
-    def update(self, dt: float):
+    def update(self, dt: float) -> None:
         """Met à jour physique, IA, logique du jeu"""
         pass
 
     @abstractmethod
-    def draw(self, screen: pygame.Surface):
+    def draw(self, screen: pygame.Surface) -> None:
         """Dessine la scène"""
         pass
 
@@ -30,21 +30,21 @@ class SceneManager:
     def __init__(self):
         self.active_scene: Scene = None
 
-    def switch_scene(self, new_scene: str):
+    def switch_scene(self, new_scene: str) -> None:
         self.active_scene = self.SCENES[new_scene]
 
-    def handle_events(self, raw_input: RawInput):
+    def handle_events(self, raw_input: RawInput) -> None:
         if self.active_scene:
             self.active_scene.handle_events(raw_input)
 
-    def update(self, dt):
+    def update(self, dt: float) -> None:
         if self.active_scene:
             self.active_scene.update(dt)
     
             if self.active_scene.next_scene:
-                self.active_scene = self.SCENES[self.active_scene.next_scene]
+                self.switch_scene(self.active_scene.next_scene)
 
-    def draw(self, screen):
+    def draw(self, screen: pygame.Surface) -> None:
         if self.active_scene:
             self.active_scene.draw(screen)
 

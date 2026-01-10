@@ -40,7 +40,7 @@ class AIActionController(ActionController):
         self.ia_component = ia_component
         self.perception = None
 
-    def update_perception(self, perception: EntityPerception):
+    def update_perception(self, perception: EntityPerception) -> None:
         self.perception = perception
 
     def get_action(self) -> EntityAction:

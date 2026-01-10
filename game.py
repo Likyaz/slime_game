@@ -34,9 +34,3 @@ class Game:
         for event in raw_input.events:
             if event.type == pygame.QUIT:
                 self.running = False
-
-    def update(self, dt):
-        pass
-
-    def draw(self):
-        pass

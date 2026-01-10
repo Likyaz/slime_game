@@ -60,18 +60,18 @@ class GameScene(Scene):
         ]
         self.entity_manager.add_entities(self.visual_entities)
 
-    def handle_events(self, raw_input: RawInput):
+    def handle_events(self, raw_input: RawInput) -> None:
         game_action = self.input.handle(raw_input)
         self.player.action_controller.feed_input(game_action)
         if game_action.open_inventory:
             self.next_scene = "inventory"
 
-    def update(self, dt: float):
+    def update(self, dt: float) -> None:
         self.physics_system.update_all(dt)
         self.entity_manager.update_all(dt)
         self.action_system_manager.update_all(dt)
 
-    def draw(self, screen: pygame.Surface):
+    def draw(self, screen: pygame.Surface) -> None:
         screen.fill((0, 0, 0))
         self.graphic_system.draw_all(screen)
 

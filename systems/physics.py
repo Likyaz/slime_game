@@ -166,7 +166,7 @@ class PhysicSystem:
                     else:
                         raise ValueError(f"Unsupported surface type: {entity1.surface} and {entity2.surface}")
 
-    def _resolve_rect_vs_rotated_rect(self, entity1: PhysicEntity, entity2: PhysicEntity) -> None:
+    def _resolve_rect_vs_rotated_rect(self, entity1: PhysicEntity, entity2: PhysicEntity) -> Vector:
         def dot(a: Vector, b: Vector) -> float:
             return a.x * b.x + a.y * b.y
 

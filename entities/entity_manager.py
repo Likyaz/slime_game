@@ -1,5 +1,3 @@
-from typing import Type
-
 from entities.entity import Entity
 from systems.physics import PhysicEntity
 from systems.graphic import GraphicEntity
@@ -15,7 +13,7 @@ class EntityManager:
         self.graphic_system = graphic_system
         self.action_system_manager = action_system_manager
 
-    def add_entity(self, entity: Entity):
+    def add_entity(self, entity: Entity) -> None:
         self.entities.append(entity)
         if entity.physics_entity and isinstance(entity.physics_entity, PhysicEntity):
             self.physics_system.add_entity(entity.physics_entity)
@@ -24,7 +22,7 @@ class EntityManager:
         if entity.action_system and issubclass(entity.action_system, ActionSystem):
             self.action_system_manager.add_entity(entity)
 
-    def add_entities(self, entities: list[Entity]):
+    def add_entities(self, entities: list[Entity]) -> None:
         self.entities.extend(entities)
         for entity in entities:
             if entity.physics_entity and isinstance(entity.physics_entity, PhysicEntity):
@@ -34,7 +32,7 @@ class EntityManager:
             if entity.action_system and issubclass(entity.action_system, ActionSystem):
                 self.action_system_manager.add_entity(entity)
 
-    def remove_entity(self, entity: Entity):
+    def remove_entity(self, entity: Entity) -> None:
         self.entities.remove(entity)
         if entity.physics_entity and isinstance(entity.physics_entity, PhysicEntity):
             self.physics_system.remove_entity(entity.physics_entity)
@@ -43,7 +41,7 @@ class EntityManager:
         if entity.action_system and issubclass(entity.action_system, ActionSystem):
             self.action_system_manager.remove_entity(entity)
 
-    def update_all(self, dt: float):
+    def update_all(self, dt: float) -> None:
         for entity in self.entities:
             if not (entity.physics_entity and isinstance(entity.physics_entity, PhysicEntity)):
                 continue
@@ -59,6 +57,6 @@ class EntityManager:
                     )) 
             entity.graphic_entity.position = entity.physics_entity.position
 
-    def cleanup(self):
+    def cleanup(self) -> None:
         pass
 
