@@ -1,8 +1,26 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from systems.action_controllers.action_controller import ActionController, EntityAction
+from systems.actions.action import EntityAction, Action
+from systems.inputs.input import ActionInput
 from systems.physics import Vector
 from entities.entity_type import EntityType
+
+class ActionController(ABC):
+    @abstractmethod
+    def get_action(self) -> Action:
+        pass
+
+
+class PlayerActionController(ActionController):
+    def feed_input(self, game_action: ActionInput) -> None:
+        self.last_action = EntityAction(
+            move=game_action.move,
+            pick=game_action.pick
+        )
+
+    def get_action(self) -> EntityAction:
+        return self.last_action
 
 
 @dataclass(frozen=True)

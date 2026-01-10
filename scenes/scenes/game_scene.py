@@ -8,6 +8,7 @@ from systems.graphic import GraphicSystem
 from entities.entity_manager import EntityManager
 from entities.entity_factory import EntityFactory
 from scenes.scene import register_scene
+from systems.actions.action_system import ActionSystemManager
 import settings
 
 
@@ -17,10 +18,13 @@ class GameScene(Scene):
         super().__init__()
         self.physics_system = PhysicsSystem()
         self.graphic_system = GraphicSystem()
+        self.action_system_manager = ActionSystemManager()
+        self.input = GameInput()
 
         self.entity_manager = EntityManager(
             physics_system=self.physics_system,
-            graphic_system=self.graphic_system
+            graphic_system=self.graphic_system,
+            action_system_manager=self.action_system_manager
         )
 
         # ========= Create Player =========
@@ -57,7 +61,7 @@ class GameScene(Scene):
         self.entity_manager.add_entities(self.visual_entities)
 
     def handle_events(self, raw_input: RawInput):
-        game_action = GameInput.handle(raw_input)
+        game_action = self.input.handle(raw_input)
         self.player.action_controller.feed_input(game_action)
         if game_action.open_inventory:
             self.next_scene = "inventory"
@@ -65,6 +69,7 @@ class GameScene(Scene):
     def update(self, dt: float):
         self.physics_system.update_all(dt)
         self.entity_manager.update_all(dt)
+        self.action_system_manager.update_all(dt)
 
     def draw(self, screen: pygame.Surface):
         screen.fill((0, 0, 0))

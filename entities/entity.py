@@ -1,12 +1,16 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Type
+
 from systems.physics import PhysicsEntity
 from systems.graphic import GraphicEntity
 from systems.items import InventoryComponent
-from systems.ia_components.ia_component import IAComponent
-from systems.action_controllers.action_controller import ActionController, EntityAction
+from systems.actions.action_controller import ActionController
+from systems.actions.action import EntityAction
 from entities.entity_type import EntityType
-import settings
 
-
+if TYPE_CHECKING:
+    from systems.actions.action_system import ActionSystem
 
 
 class Entity:
@@ -16,6 +20,7 @@ class Entity:
         graphic_entity: GraphicEntity = None,
         # inventory_component: InventoryComponent = None,
         action_controller: ActionController = None,
+        action_system: Type[ActionSystem] = None,
         entity_type: EntityType = EntityType.NONE,
     ):
         self.physics_entity = physics_entity
@@ -24,12 +29,4 @@ class Entity:
         self.entity_type = entity_type
         self.action_controller = action_controller # Il choisit quoi faire
         self.entity_action = EntityAction() # Il stock quoi faire
-        # self.action_system: ActionSystem# Applique l'action a la physique
-
-    def update(self, dt: float, action: EntityAction):
-        move_normalized = action.move.normalize()
-        acc = move_normalized * settings.ENTITY_ACCELERATION
-        if action.move.length > acc.length:
-            self.physics_entity.acc = action.move
-        else:
-            self.physics_entity.acc = acc
+        self.action_system = action_system # Applique l'action a la physique

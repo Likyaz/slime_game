@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import pygame
 
-from systems.inputs.input import InputContext, RawInput, Action
+from systems.inputs.input import InputContext, RawInput, ActionInput
 from systems.physics import Vector
 
 
@@ -15,14 +15,14 @@ class GameKey:
     OPEN_INVENTORY = pygame.K_i
 
 @dataclass(frozen=True)
-class GameAction(Action):
+class GameActionInput(ActionInput):
     move: Vector
     pick: bool
     open_inventory: bool
 
 class GameInput(InputContext):
     @staticmethod
-    def handle(raw_input: RawInput) -> GameAction:
+    def handle(raw_input: RawInput) -> ActionInput:
         keys = raw_input.keys   
         move = Vector(0, 0)
         if keys[GameKey.LEFT]:
@@ -33,7 +33,7 @@ class GameInput(InputContext):
             move.y = -1
         if keys[GameKey.DOWN]:
             move.y = 1
-        return GameAction(
+        return GameActionInput(
             move=move,
             pick=keys[GameKey.PICK],
             open_inventory=keys[GameKey.OPEN_INVENTORY]

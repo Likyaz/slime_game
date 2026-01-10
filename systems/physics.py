@@ -39,13 +39,16 @@ class PhysicsSystem:
     def __init__(self, entities: list[PhysicsEntity]=None):
         self.entities = entities or []
 
+    def sort_entities(self) -> None:
+        self.entities.sort(key=lambda x: (x.fixed, x.mass * -1))
+
     def add_entity(self, entity: PhysicsEntity) -> None:
         self.entities.append(entity)
-        self.entities.sort(key=lambda x: (x.fixed, x.mass * -1))
+        self.sort_entities()
 
     def add_entities(self, entities: list[PhysicsEntity]) -> None:
         self.entities.extend(entities)
-        self.entities.sort(key=lambda x: (x.fixed, x.mass * -1))
+        self.sort_entities()
 
     def remove_entity(self, entity: PhysicsEntity) -> None:
         self.entities.remove(entity)

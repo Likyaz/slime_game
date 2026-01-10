@@ -18,10 +18,10 @@ class InputSystem:
             mouse_position=pygame.mouse.get_pos(),
         )
 
-class Action(ABC):
+class ActionInput(ABC):
     pass
 
 class InputContext(ABC):
     @abstractmethod
-    def handle(self, raw_input: RawInput) -> Action:
+    def handle(self, raw_input: RawInput) -> ActionInput:
         raise NotImplementedError
