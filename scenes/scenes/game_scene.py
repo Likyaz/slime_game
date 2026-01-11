@@ -9,6 +9,8 @@ from entities.entity_manager import EntityManager
 from entities.entity_factory import EntityFactory
 from scenes.scene import register_scene
 from systems.actions.action_system import ActionSystemManager
+from systems.audio.audio_system_manager import AudioSystemManager
+from systems.audio.synth.source import SynthAudioSource
 import settings
 
 
@@ -20,6 +22,8 @@ class GameScene(Scene):
         self.graphic_system = GraphicSystem()
         self.action_system_manager = ActionSystemManager()
         self.input = GameInput()
+        self.audio_system = AudioSystemManager()
+        self.audio_system.register_audio_source(SynthAudioSource)
 
         self.entity_manager = EntityManager(
             physics_system=self.physics_system,
@@ -49,7 +53,7 @@ class GameScene(Scene):
         # ========= Create Slimes =========
         self.slimes = [
             EntityFactory.create_slime(600, 350)
-            for _ in range(100)
+            for _ in range(10)
         ]
         self.entity_manager.add_entities(self.slimes)
 
@@ -59,6 +63,13 @@ class GameScene(Scene):
             EntityFactory.create_visual_circle(200, 200, 50),
         ]
         self.entity_manager.add_entities(self.visual_entities)
+
+    def start(self) -> None:
+        self.audio_system.start_audio()
+
+    def quit(self) -> None:
+        self.audio_system.stop_audio()
+        super().quit()
 
     def handle_events(self, raw_input: RawInput) -> None:
         game_action = self.input.handle(raw_input)
@@ -70,6 +81,7 @@ class GameScene(Scene):
         self.physics_system.update_all(dt)
         self.entity_manager.update_all(dt)
         self.action_system_manager.update_all(dt)
+        self.audio_system.play_sounds()
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.fill((0, 0, 0))

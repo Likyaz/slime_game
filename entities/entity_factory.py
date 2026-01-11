@@ -6,6 +6,11 @@ from systems.actions.action_controller import PlayerActionController, AIActionCo
 from systems.actions.action_system import AliveActionSystem
 from entities.entity_type import EntityType
 from systems.ia_components.slime_ia import SlimeIA
+from systems.audio.entity import AudioEntity
+from systems.audio.synth.sound import SynthSound
+from systems.audio.play_policy import PlayPolicy
+from systems.audio.synth.wave_type import WaveType
+
 import settings
 
 
@@ -16,6 +21,9 @@ class EntityFactory:
         return Entity(
             physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePhysicSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=40),
             graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleGraphicSurface(radius=settings.ENTITY_RADIUS), color=(0, 255, 0), z_index=100),
+            audio_entity=AudioEntity({
+                "walk": SynthSound(freq=440, amp=1, duration=0.2, wave_type=WaveType.SIN, play_policy=PlayPolicy.RESTART)
+            }),
             action_controller=PlayerActionController(),
             action_system=AliveActionSystem,
             entity_type=EntityType.PLAYER

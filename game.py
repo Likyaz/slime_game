@@ -4,6 +4,7 @@ from settings import FPS, WINDOW_WIDTH, WINDOW_HEIGHT
 from scenes.scene import SceneManager
 from scenes.scenes.game_scene import GameScene
 
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -14,6 +15,7 @@ class Game:
         self.scene_manager = SceneManager()
         self.scene_manager.switch_scene("game")
         self.font = pygame.font.SysFont(None, 22)
+        self.scene_manager.start_active_scene()
 
     def run(self):
         while self.running:

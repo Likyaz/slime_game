@@ -3,12 +3,15 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
+
 from systems.actions.action_controller import ActionController
+from systems.event_bus import EventBus, PlaySoundEvent
 import settings
 
 
 if TYPE_CHECKING:
     from entities.entity import Entity
+
 
 class ActionSystemManager:
     def __init__(self):
@@ -49,6 +52,10 @@ class AliveActionSystem(ActionSystem):
     def apply_action(self, dt: float, entity: Entity) -> None:
         move_normalized = entity.entity_action.move.normalize()
         acc = move_normalized * settings.ENTITY_ACCELERATION
+
+        if entity.entity_action.move.length > 0:
+            EventBus.emit(PlaySoundEvent(key_sound="walk", entity=entity))
+
         if entity.entity_action.move.length > acc.length:
             entity.physics_entity.acc = entity.entity_action.move
         else:

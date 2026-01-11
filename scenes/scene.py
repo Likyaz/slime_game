@@ -33,6 +33,10 @@ class SceneManager:
     def switch_scene(self, new_scene: str) -> None:
         self.active_scene = self.SCENES[new_scene]
 
+    def start_active_scene(self) -> None:
+        if self.active_scene:
+            self.active_scene.start()
+
     def handle_events(self, raw_input: RawInput) -> None:
         if self.active_scene:
             self.active_scene.handle_events(raw_input)
@@ -43,6 +47,7 @@ class SceneManager:
     
             if self.active_scene.next_scene:
                 self.switch_scene(self.active_scene.next_scene)
+                self.active_scene.start()
 
     def draw(self, screen: pygame.Surface) -> None:
         if self.active_scene:
