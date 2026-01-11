@@ -4,7 +4,7 @@ import numpy as np
 import settings
 import sounddevice as sd
 from systems.event_bus import EventBus, ChannelEvent
-from systems.event_bus import PlaySoundEvent
+from systems.audio.event import PlaySoundEvent    
 from systems.audio.source import AudioSource, MixAudioSource
 from systems.audio.synth.source import SynthAudioSource
 from systems.audio.wav.source import WaveFileAudioSource

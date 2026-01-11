@@ -5,6 +5,8 @@ from systems.actions.action import EntityAction, Action
 from systems.inputs.input import ActionInput
 from systems.physics import Vector
 from entities.entity_type import EntityType
+from systems.event_bus import EventBus
+from systems.logger import LoggingEvent, LogLevel
 
 class ActionController(ABC):
     @abstractmethod
@@ -14,6 +16,7 @@ class ActionController(ABC):
 
 class PlayerActionController(ActionController):
     def feed_input(self, game_action: ActionInput) -> None:
+        EventBus.emit(LoggingEvent(message=f"PlayerActionController.feed_input: {game_action}", level=LogLevel.DEBUG))
         self.last_action = EntityAction(
             move=game_action.move,
             pick=game_action.pick

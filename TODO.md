@@ -1,5 +1,10 @@
 - [x] Set audio system
-- [ ] Set loggin system
+- [X] Set loggin system
+- [ ] refactor nameing 
+- [ ] Create WAV audio generator
+- [ ] Create Text Graphic Surface 
+- [ ] Add texture to Graphic Surface
+- [ ] Decouple the PhysicManager from the PhysicSystem
 - [ ] Set attribut system
 - [ ] Set effect system
 - [ ] Set items system

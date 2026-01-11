@@ -13,21 +13,10 @@ class ChannelEvent(Enum):
     AUDIO = 'audio'
 
     # ==== LOGGING EVENTS ====
-    DEBUG = 'debug'
+    LOGGING = 'logging'
 
 class Event(ABC):
     channel: ChannelEvent = ChannelEvent.GLOBAL
-
-@dataclass(frozen=True)
-class PlaySoundEvent(Event):
-    key_sound: str
-    entity: Entity
-    channel: ChannelEvent = ChannelEvent.AUDIO
-
-@dataclass(frozen=True)
-class DebugEvent(Event):
-    message: str
-    channel: ChannelEvent = ChannelEvent.DEBUG
 
 
 class EventBus:
@@ -35,8 +24,6 @@ class EventBus:
 
     @classmethod
     def emit(self, event: Event):
-        if not settings.DEBUG and event.channel == ChannelEvent.DEBUG:
-            return
         self.events.append(event)
 
     @classmethod
@@ -46,7 +33,10 @@ class EventBus:
             for event in self.events:
                 if event.channel == channel:
                     events.append(event)
-                    self.events.remove(event)
+
+            for event in events:
+                self.events.remove(event)
+
             return events
         else:
             events = self.events

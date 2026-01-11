@@ -3,9 +3,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
-
 from systems.actions.action_controller import ActionController
-from systems.event_bus import EventBus, PlaySoundEvent
+from systems.event_bus import EventBus
+from systems.audio.event import PlaySoundEvent
 import settings
 
 

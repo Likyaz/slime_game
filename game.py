@@ -2,6 +2,8 @@ import pygame
 from systems.inputs.input import InputSystem, RawInput
 from settings import FPS, WINDOW_WIDTH, WINDOW_HEIGHT
 from scenes.scene import SceneManager
+from systems.logger import LoggerManager
+
 from scenes.scenes.game_scene import GameScene
 
 
@@ -16,6 +18,7 @@ class Game:
         self.scene_manager.switch_scene("game")
         self.font = pygame.font.SysFont(None, 22)
         self.scene_manager.start_active_scene()
+        self.logger_manager = LoggerManager()
 
     def run(self):
         while self.running:
@@ -25,6 +28,7 @@ class Game:
             self.scene_manager.handle_events(raw_input)
             self.scene_manager.update(self.dt)
             self.scene_manager.draw(self.display)
+            self.logger_manager.update()
 
             fps = self.clock.get_fps()
             fps_surf = self.font.render(f"FPS: {fps:.0f}", True, (255, 0, 0))
