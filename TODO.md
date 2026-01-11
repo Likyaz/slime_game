@@ -1,10 +1,10 @@
-[ ] - Set audio system
-[ ] - Set loggin system
-[ ] - Set attribut system
-[ ] - Set effect system
-[ ] - Set items system
-[ ] - transforme physics.py to module
-[ ] - transforme graphic.py to module
-[ ] - transforme items.py to module
-[ ] - transforme attributs.py to module
-[ ] - transforme audio.py to module
+- [x] Set audio system
+- [ ] Set loggin system
+- [ ] Set attribut system
+- [ ] Set effect system
+- [ ] Set items system
+- [ ] transforme physics.py to module
+- [ ] transforme graphic.py to module
+- [ ] transforme items.py to module
+- [ ] transforme attributs.py to module
+- [ ] transforme audio.py to module
