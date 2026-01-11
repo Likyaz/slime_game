@@ -3,8 +3,6 @@
 - [ ] Set attribut system
 - [ ] Set effect system
 - [ ] Set items system
-- [ ] transforme physics.py to module
-- [ ] transforme graphic.py to module
-- [ ] transforme items.py to module
-- [ ] transforme attributs.py to module
-- [ ] transforme audio.py to module
+- [ ] Create a separate thread for physics
+- [ ] Create a separate thread for graphics
+
