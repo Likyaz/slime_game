@@ -77,8 +77,10 @@ class PhysicSystem:
             if entity.fixed:
                 continue
             entity.vel += entity.acc * dt
-            entity.position += entity.vel * dt
             entity.vel -= entity.vel * settings.ENTITY_FRICTION
+            if entity.vel.length > settings.ENTITY_MAX_SPEED:
+                entity.vel = entity.vel.normalize() * settings.ENTITY_MAX_SPEED
+            entity.position += entity.vel * dt
 
         self.resolve_collisions()
 
