@@ -1,14 +1,30 @@
+# ====== DEBUG SETTINGS ======
+# Global
 DEBUG = True
 
+# Subsystems
+# DEBUG_PHYSICS = False
+# DEBUG_GRAPHIC = False
+# DEBUG_AUDIO = False
+
+# Instrumentation
+# PROFILE_PHYSICS = False
+
+# ====== AUDIO SETTINGS ======
 AUDIO_FREQ_ECH = 44100
 AUDIO_SAMPLE_SIZE = 256
 
+# ====== GAME SETTINGS ======
 FPS = 60
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
+
+# ====== PHYSICS SETTINGS ======
+# physics engine settings
 SPATIAL_CELL_SIZE = 50
 COLLISION_RESOLUTION_ITERATIONS = 3
 
+# Physics constants
 ENTITY_ACCELERATION = 3000
 ENTITY_RADIUS = 3
 ENTITY_FRICTION = 0.5

@@ -5,7 +5,8 @@ from systems.inputs.input import RawInput
 from systems.inputs.game_input import GameInput
 from systems.physics.manager import PhysicSystemManager
 from systems.physics.system.top_down import TopDownPhysicsSystem
-from systems.graphic import GraphicSystemManager
+from systems.graphics.manager import GraphicSystemManager
+from systems.graphics.system.top_view_2d import TopView2DGraphicSystem
 from entities.entity_manager import EntityManager
 from entities.entity_factory import EntityFactory
 from scenes.scene import register_scene
@@ -19,16 +20,16 @@ import settings
 class GameScene(Scene):
     def __init__(self):
         super().__init__()
-        self.physics_system = PhysicSystemManager(TopDownPhysicsSystem())
-        self.graphic_system = GraphicSystemManager()
+        self.physics_system_manager = PhysicSystemManager(TopDownPhysicsSystem())
+        self.graphic_system_manager = GraphicSystemManager(TopView2DGraphicSystem())
         self.action_system_manager = ActionSystemManager()
         self.input = GameInput()
         self.audio_system = AudioSystemManager()
         self.audio_system.register_audio_source(SynthAudioSource)
 
         self.entity_manager = EntityManager(
-            physics_system=self.physics_system,
-            graphic_system=self.graphic_system,
+            physics_system_manager=self.physics_system_manager,
+            graphic_system_manager=self.graphic_system_manager,
             action_system_manager=self.action_system_manager
         )
 
@@ -79,13 +80,13 @@ class GameScene(Scene):
             self.next_scene = "inventory"
 
     def update(self, dt: float) -> None:
-        self.physics_system.update_all(dt)
+        self.physics_system_manager.update_all(dt)
         self.entity_manager.update_all(dt)
         self.action_system_manager.update_all(dt)
         self.audio_system.play_sounds()
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.fill((0, 0, 0))
-        self.graphic_system.draw_all(screen)
+        self.graphic_system_manager.draw_all(screen)
 
 

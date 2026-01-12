@@ -1,24 +1,24 @@
 from entities.entity import Entity
-from systems.graphic import GraphicEntity
+from systems.graphics.entity import GraphicEntity
 from systems.actions.action_controller import AIActionController, EntityPerception, EntityInfo
 from systems.physics.manager import PhysicSystemManager
 from systems.physics.entity import PhysicEntity
-from systems.graphic import GraphicSystemManager
+from systems.graphics.manager import GraphicSystemManager
 from systems.actions.action_system import ActionSystemManager, ActionSystem
 
 class EntityManager:
-    def __init__(self, physics_system: PhysicSystemManager, graphic_system: GraphicSystemManager, action_system_manager: ActionSystemManager):
+    def __init__(self, physics_system_manager: PhysicSystemManager, graphic_system_manager: GraphicSystemManager, action_system_manager: ActionSystemManager):
         self.entities: list[Entity] = []
-        self.physics_system = physics_system
-        self.graphic_system = graphic_system
+        self.physics_system_manager = physics_system_manager
+        self.graphic_system_manager = graphic_system_manager
         self.action_system_manager = action_system_manager
 
     def add_entity(self, entity: Entity) -> None:
         self.entities.append(entity)
         if entity.physics_entity and isinstance(entity.physics_entity, PhysicEntity):
-            self.physics_system.add_entity(entity.physics_entity)
+            self.physics_system_manager.add_entity(entity.physics_entity)
         if entity.graphic_entity and isinstance(entity.graphic_entity, GraphicEntity):
-            self.graphic_system.add_entity(entity.graphic_entity)
+            self.graphic_system_manager.add_entity(entity.graphic_entity)
         if entity.action_system and issubclass(entity.action_system, ActionSystem):
             self.action_system_manager.add_entity(entity)
 
@@ -26,18 +26,18 @@ class EntityManager:
         self.entities.extend(entities)
         for entity in entities:
             if entity.physics_entity and isinstance(entity.physics_entity, PhysicEntity):
-                self.physics_system.add_entity(entity.physics_entity)
+                self.physics_system_manager.add_entity(entity.physics_entity)
             if entity.graphic_entity and isinstance(entity.graphic_entity, GraphicEntity):
-                self.graphic_system.add_entity(entity.graphic_entity)
+                self.graphic_system_manager.add_entity(entity.graphic_entity)
             if entity.action_system and issubclass(entity.action_system, ActionSystem):
                 self.action_system_manager.add_entity(entity)
 
     def remove_entity(self, entity: Entity) -> None:
         self.entities.remove(entity)
         if entity.physics_entity and isinstance(entity.physics_entity, PhysicEntity):
-            self.physics_system.remove_entity(entity.physics_entity)
+            self.physics_system_manager.remove_entity(entity.physics_entity)
         if entity.graphic_entity and isinstance(entity.graphic_entity, GraphicEntity):
-            self.graphic_system.remove_entity(entity.graphic_entity)
+            self.graphic_system_manager.remove_entity(entity.graphic_entity)
         if entity.action_system and issubclass(entity.action_system, ActionSystem):
             self.action_system_manager.remove_entity(entity)
 
@@ -54,7 +54,7 @@ class EntityManager:
                             for e in self.entities
                             if entity.physics_entity and isinstance(e.physics_entity, PhysicEntity)
                         ]
-                    )) 
+                    ))
             entity.graphic_entity.position = entity.physics_entity.position
 
     def cleanup(self) -> None:

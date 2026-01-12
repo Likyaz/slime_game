@@ -9,7 +9,7 @@ from collections import defaultdict
 
 class TopDownPhysicsSystem(PhysicSystem):
     class KeySortFunction(PhysicSystem.KeySortFunction):
-        def __call__(self, entity: PhysicEntity) -> tuple[bool, float]:
+        def __call__(self, entity: PhysicEntity) -> tuple:
             return entity.fixed, entity.mass * -1
 
     key_sort_function = KeySortFunction()

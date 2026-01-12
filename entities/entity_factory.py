@@ -2,7 +2,8 @@ from entities.entity import Entity
 from systems.vector import Vector
 from systems.physics.entity import PhysicEntity
 from systems.physics.surface import CirclePhysicSurface, RectPhysicSurface, RotatedRectPhysicSurface
-from systems.graphic import GraphicEntity, CircleGraphicSurface, RectGraphicSurface, RotatedRectGraphicSurface
+from systems.graphics.entity import GraphicEntity
+from systems.graphics.surface import CircleGraphicSurface, RectGraphicSurface, RotatedRectGraphicSurface
 from systems.actions.action_controller import PlayerActionController, AIActionController
 from systems.actions.action_system import AliveActionSystem
 from entities.entity_type import EntityType

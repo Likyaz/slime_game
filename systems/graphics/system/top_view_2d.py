@@ -1,56 +1,21 @@
-import math
-from dataclasses import dataclass
-from abc import ABC
-
 import pygame
 
+from systems.graphics.system import GraphicSystem
+from systems.graphics.entity import GraphicEntity
+from systems.graphics.surface import RectGraphicSurface, RotatedRectGraphicSurface, CircleGraphicSurface
 from systems.vector import Vector
+import math
 
 
-class GraphicSurface(ABC):
-    pass
+class TopView2DGraphicSystem(GraphicSystem):
+    class KeySortFunction(GraphicSystem.KeySortFunction):
+        def __call__(self, entity: GraphicEntity) -> tuple:
+            return entity.z_index
 
-@dataclass(frozen=True)
-class RectGraphicSurface(GraphicSurface):
-    width: float
-    height: float
+    key_sort_function = KeySortFunction()
 
-
-@dataclass(frozen=True)
-class RotatedRectGraphicSurface(GraphicSurface):
-    width: float
-    height: float
-    rotation: float
-
-@dataclass(frozen=True)   
-class CircleGraphicSurface(GraphicSurface):
-    radius: float
-
-
-@dataclass(slots=True)
-class GraphicEntity:
-    position: Vector
-    surface: GraphicSurface
-    z_index: int = 1
-    color: tuple[int, int, int] = (255, 255, 255)
-
-class GraphicSystemManager:
-    def __init__(self):
-        self.entities = []
-
-    def add_entity(self, entity: GraphicEntity) -> None:
-        self.entities.append(entity)
-        self.entities.sort(key=lambda x: x.z_index)
-
-    def add_entities(self, entities: list[GraphicEntity]) -> None:
-        self.entities.extend(entities)
-        self.entities.sort(key=lambda x: x.z_index)
-
-    def remove_entity(self, entity: GraphicEntity) -> None:
-        self.entities.remove(entity)
-
-    def draw_all(self, screen: pygame.Surface) -> None:
-        for entity in self.entities:
+    def draw_all(self, screen: pygame.Surface, entities: list[GraphicEntity]) -> None:
+        for entity in entities:
             if isinstance(entity.surface, CircleGraphicSurface):
                 pygame.draw.circle(screen, entity.color, entity.position.to_tuple(), entity.surface.radius)
             elif isinstance(entity.surface, RectGraphicSurface):
@@ -81,4 +46,3 @@ class GraphicSystemManager:
                 pygame.draw.polygon(screen, entity.color, points)
             else:
                 raise ValueError(f"Unsupported surface type: {type(entity.surface)}")
-
