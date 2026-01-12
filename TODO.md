@@ -1,7 +1,20 @@
 - [x] Set audio system
 - [X] Set loggin system
 - [X] refactor `physic.py`
+- [X] Decouple the PhysicManager from the PhysicSystem
+- [ ] Refactor for framework transformation: physics
 - [ ] make test with pytest
+- [ ] make doc
+- [ ] organizes settings.py
+- [ ] Refactor for framework transformation: graphic
+- [ ] Refactor for framework transformation: ia_components
+- [ ] Refactor for framework transformation: actions
+- [ ] Refactor for framework transformation: input
+- [ ] Refactor for framework transformation: audio
+- [ ] Refactor for framework transformation: items
+- [ ] refacto actions 
+- [ ] refacto ia_components
+- [ ] refacto inputs
 - [ ] make more sound class for Synth 
 - [ ] refactor `physic/entity.py`
 - [ ] Create module math
@@ -9,9 +22,9 @@
 - [ ] Create WAV audio generator
 - [ ] Create Text Graphic Surface 
 - [ ] Add texture to Graphic Surface
-- [X] Decouple the PhysicManager from the PhysicSystem
 - [ ] Set attribut system
 - [ ] Set effect system
+- [ ] Set skill system
 - [ ] Set items system
 - [ ] Create a separate thread for physics
 - [ ] Create a separate thread for graphics
