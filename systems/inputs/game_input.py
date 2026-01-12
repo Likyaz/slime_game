@@ -23,16 +23,16 @@ class GameActionInput(ActionInput):
 class GameInput(InputContext):
     @staticmethod
     def handle(raw_input: RawInput) -> GameActionInput:
-        keys = raw_input.keys   
-        move = Vector(0, 0)
+        keys = raw_input.keys
+        move = Vector.zero()
         if keys[GameKey.LEFT]:
-            move.x = -1
+            move = Vector(-1, 0)
         if keys[GameKey.RIGHT]:
-            move.x = 1
+            move = Vector(1, 0)
         if keys[GameKey.UP]:
-            move.y = -1
+            move = Vector(0, -1)
         if keys[GameKey.DOWN]:
-            move.y = 1
+            move = Vector(0, 1)
         return GameActionInput(
             move=move,
             pick=keys[GameKey.PICK],

@@ -49,10 +49,26 @@ class Vector:
         return math.atan2(self.y, self.x)
 
     def __add__(self, other: "Vector") -> "Vector":
-        return Vector(self.x + other.x, self.y + other.y)
+        if isinstance(other, Vector):
+            return Vector(self.x + other.x, self.y + other.y)
+        if isinstance(other, (int, float)):
+            return Vector(self.x + other, self.y + other)
+        raise TypeError(f"Unsupported operand type for +: {type(other)}")
+
+    def __radd__(self, other: Union[int, float]) -> "Vector":
+        return self.__add__(other)
 
     def __sub__(self, other: "Vector") -> "Vector":
-        return Vector(self.x - other.x, self.y - other.y)
+        if isinstance(other, Vector):
+            return Vector(self.x - other.x, self.y - other.y)
+        if isinstance(other, (int, float)):
+            return Vector(self.x - other, self.y - other)
+        raise TypeError(f"Unsupported operand type for -: {type(other)}")
+
+    def __rsub__(self, other: Union[int, float]) -> "Vector":
+        if isinstance(other, (int, float)):
+            return Vector(other - self.x, other - self.y)
+        raise TypeError(f"Unsupported operand type for -: {type(other)}")
 
     def __mul__(self, other: Union[int, float, "Vector"]) -> "Vector":
         if isinstance(other, (int, float)):
@@ -69,6 +85,14 @@ class Vector:
             return Vector(self.x / other.x, self.y / other.y)
         else:
             raise TypeError(f"Unsupported operand type for /: {type(other)}")
+
+    def __rtruediv__(self, other: Union[int, float]) -> "Vector":
+        return Vector(other / self.x, other / self.y)
+
+    __rmul__ = __mul__
+    __imul__ = __mul__
+    __iadd__ = __add__
+    __isub__ = __sub__
 
     def __str__(self) -> str:
         return f"Vector({self.x}, {self.y})"
