@@ -1,13 +1,13 @@
 from entities.entity import Entity
-from systems.physics import PhysicEntity
 from systems.graphic import GraphicEntity
 from systems.actions.action_controller import AIActionController, EntityPerception, EntityInfo
-from systems.physics import PhysicSystem
-from systems.graphic import GraphicSystem
+from systems.physics.manager import PhysicSystemManager
+from systems.physics.entity import PhysicEntity
+from systems.graphic import GraphicSystemManager
 from systems.actions.action_system import ActionSystemManager, ActionSystem
 
 class EntityManager:
-    def __init__(self, physics_system: PhysicSystem, graphic_system: GraphicSystem, action_system_manager: ActionSystemManager):
+    def __init__(self, physics_system: PhysicSystemManager, graphic_system: GraphicSystemManager, action_system_manager: ActionSystemManager):
         self.entities: list[Entity] = []
         self.physics_system = physics_system
         self.graphic_system = graphic_system

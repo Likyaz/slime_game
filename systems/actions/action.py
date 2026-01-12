@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from abc import ABC
-from systems.physics import Vector
+from systems.vector import Vector
 
 
 class Action(ABC):

@@ -3,8 +3,9 @@ import pygame
 
 from systems.inputs.input import RawInput
 from systems.inputs.game_input import GameInput
-from systems.physics import PhysicSystem
-from systems.graphic import GraphicSystem
+from systems.physics.manager import PhysicSystemManager
+from systems.physics.system.top_down import TopDownPhysicsSystem
+from systems.graphic import GraphicSystemManager
 from entities.entity_manager import EntityManager
 from entities.entity_factory import EntityFactory
 from scenes.scene import register_scene
@@ -18,8 +19,8 @@ import settings
 class GameScene(Scene):
     def __init__(self):
         super().__init__()
-        self.physics_system = PhysicSystem()
-        self.graphic_system = GraphicSystem()
+        self.physics_system = PhysicSystemManager(TopDownPhysicsSystem())
+        self.graphic_system = GraphicSystemManager()
         self.action_system_manager = ActionSystemManager()
         self.input = GameInput()
         self.audio_system = AudioSystemManager()

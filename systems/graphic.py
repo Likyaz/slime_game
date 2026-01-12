@@ -34,7 +34,7 @@ class GraphicEntity:
     z_index: int = 1
     color: tuple[int, int, int] = (255, 255, 255)
 
-class GraphicSystem:
+class GraphicSystemManager:
     def __init__(self):
         self.entities = []
 

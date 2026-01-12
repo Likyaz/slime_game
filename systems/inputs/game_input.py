@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import pygame
 
 from systems.inputs.input import InputContext, RawInput, ActionInput
-from systems.physics import Vector
+from systems.vector import Vector
 
 
 class GameKey:

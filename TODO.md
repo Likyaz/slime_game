@@ -1,10 +1,12 @@
 - [x] Set audio system
 - [X] Set loggin system
+- [X] refactor `physic.py`
+- [ ] refactor `physic/entity.py`
 - [ ] refactor nameing 
 - [ ] Create WAV audio generator
 - [ ] Create Text Graphic Surface 
 - [ ] Add texture to Graphic Surface
-- [ ] Decouple the PhysicManager from the PhysicSystem
+- [X] Decouple the PhysicManager from the PhysicSystem
 - [ ] Set attribut system
 - [ ] Set effect system
 - [ ] Set items system
