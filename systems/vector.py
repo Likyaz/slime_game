@@ -1,7 +1,9 @@
 import math
 import random
 from typing import Union
+from dataclasses import dataclass
 
+@dataclass(frozen=True)
 class Vector:
     @staticmethod
     def zero() -> "Vector":
@@ -18,9 +20,8 @@ class Vector:
         length = random.uniform(min_length, max_length)
         return Vector(math.cos(angle) * length, math.sin(angle) * length)
 
-    def __init__(self, x: float=0, y: float=0):
-        self.x = x
-        self.y = y
+    x: float = 0
+    y: float = 0
 
     def to_tuple(self) -> tuple[float, float]:
         return self.x, self.y
