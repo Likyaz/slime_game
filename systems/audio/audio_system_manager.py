@@ -1,8 +1,7 @@
 import numpy as np
-
+import sounddevice as sd
 
 import settings
-import sounddevice as sd
 from systems.event_bus import EventBus, ChannelEvent
 from systems.audio.event import PlaySoundEvent    
 from systems.audio.source import AudioSource, MixAudioSource

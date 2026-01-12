@@ -1,9 +1,6 @@
 from abc import ABC
-from dataclasses import dataclass
 from enum import Enum
 
-import settings
-from entities.entity import Entity
 
 class ChannelEvent(Enum):
     # ==== GLOBAL EVENTS ====

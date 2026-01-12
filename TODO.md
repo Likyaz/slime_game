@@ -1,7 +1,10 @@
 - [x] Set audio system
 - [X] Set loggin system
 - [X] refactor `physic.py`
+- [ ] make test with pytest
+- [ ] make more sound class for Synth 
 - [ ] refactor `physic/entity.py`
+- [ ] Create module math
 - [ ] refactor nameing 
 - [ ] Create WAV audio generator
 - [ ] Create Text Graphic Surface 

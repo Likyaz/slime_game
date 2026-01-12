@@ -5,6 +5,7 @@ from systems.event_bus import Event
 from systems.event_bus import EventBus, ChannelEvent
 import settings
 
+
 class LogLevel(Enum):
     DEBUG = 1
     INFO = 2
