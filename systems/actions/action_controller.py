@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 from systems.actions.action import EntityAction, Action
-from systems.inputs.input import ActionInput
+from systems.inputs.system import ActionInput
 from systems.vector import Vector
 from entities.entity_type import EntityType
 from systems.event_bus import EventBus

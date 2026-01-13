@@ -2,8 +2,9 @@ from dataclasses import dataclass
 
 import pygame
 
-from systems.inputs.input import InputContext, RawInput, ActionInput
 from systems.vector import Vector
+from systems.inputs.system import ActionInput, InputSystem
+from systems.inputs.raw_input import RawInput
 
 
 class GameKey:
@@ -12,15 +13,13 @@ class GameKey:
     UP = pygame.K_UP
     DOWN = pygame.K_DOWN
     PICK = pygame.K_e
-    OPEN_INVENTORY = pygame.K_i
 
 @dataclass(frozen=True)
 class GameActionInput(ActionInput):
     move: Vector
     pick: bool
-    open_inventory: bool
 
-class GameInput(InputContext):
+class GameInputSystem(InputSystem):
     @staticmethod
     def handle(raw_input: RawInput) -> GameActionInput:
         keys = raw_input.keys
@@ -35,7 +34,6 @@ class GameInput(InputContext):
             move = Vector(0, 1)
         return GameActionInput(
             move=move,
-            pick=keys[GameKey.PICK],
-            open_inventory=keys[GameKey.OPEN_INVENTORY]
+            pick=keys[GameKey.PICK]
         )
 

@@ -1,5 +1,5 @@
 import pygame
-from systems.inputs.input import InputSystem, RawInput
+from systems.inputs.raw_input import RawInput, RawInputSystem
 from settings import FPS, WINDOW_WIDTH, WINDOW_HEIGHT
 from scenes.scene import SceneManager
 from systems.logger import LoggerManager
@@ -22,7 +22,7 @@ class Game:
 
     def run(self):
         while self.running:
-            raw_input = InputSystem.poll()
+            raw_input = RawInputSystem.poll()
             self.handle_events(raw_input)
             self.dt = self.clock.tick(FPS) / 1000
             self.scene_manager.handle_events(raw_input)

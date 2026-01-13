@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 import pygame
 
-from systems.inputs.input import RawInput
+from systems.inputs.raw_input import RawInput
 
 
 class Scene(ABC):
