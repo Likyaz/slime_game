@@ -3,7 +3,7 @@ import sounddevice as sd
 
 import settings
 from systems.event_bus import EventBus, ChannelEvent
-from systems.audio.event import PlaySoundEvent    
+from systems.event_bus.event.audio import PlaySoundEvent
 from systems.audio.source import AudioSource, MixAudioSource
 from systems.audio.synth.source import SynthAudioSource
 from systems.audio.wav.source import WaveFileAudioSource

@@ -1,19 +1,5 @@
-from abc import ABC
-from enum import Enum
-
-
-class ChannelEvent(Enum):
-    # ==== GLOBAL EVENTS ====
-    GLOBAL = 'global'
-
-    # ==== ENGINE EVENTS ====
-    AUDIO = 'audio'
-
-    # ==== LOGGING EVENTS ====
-    LOGGING = 'logging'
-
-class Event(ABC):
-    channel: ChannelEvent = ChannelEvent.GLOBAL
+from systems.event_bus.event import Event
+from systems.event_bus.channel_event import ChannelEvent
 
 
 class EventBus:

@@ -3,6 +3,7 @@
 - [X] refactor `physic.py`
 - [X] Decouple the PhysicManager from the PhysicSystem
 - [X] Decouple the GraphicSystemManager from the GraphicSystem
+- [ ] Uniformiser les divers module systems
 - [ ] Make UI System
 - [ ] Add Observer for Debug and Profiler system
 - [ ] Refactor for framework transformation: physics

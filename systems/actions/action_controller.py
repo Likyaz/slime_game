@@ -6,7 +6,7 @@ from systems.inputs.input import ActionInput
 from systems.vector import Vector
 from entities.entity_type import EntityType
 from systems.event_bus import EventBus
-from systems.logger import LoggingEvent, LogLevel
+from systems.event_bus.event.logging import LoggingEvent, LogLevel
 
 class ActionController(ABC):
     @abstractmethod

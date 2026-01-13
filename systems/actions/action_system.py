@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from systems.actions.action_controller import ActionController
 from systems.event_bus import EventBus
-from systems.audio.event import PlaySoundEvent
+from systems.event_bus.event.audio import PlaySoundEvent
 import settings
 
 
