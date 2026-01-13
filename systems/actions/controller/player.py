@@ -1,18 +1,28 @@
-from systems.actions.controller import ActionController
-from systems.actions.action import EntityAction
+from systems.actions.controller import InputActionController
+from systems.actions.action.alive import AliveActionEntity
 from systems.inputs.system import ActionInput
 from systems.event_bus import EventBus
 from systems.event_bus.event.logging import LoggingEvent
 from systems.event_bus.event.logging import LogLevel
+from systems.vector import Vector
 
 
-class PlayerActionController(ActionController):
-    def feed_input(self, game_action: ActionInput) -> None:
+class PlayerActionController(InputActionController):
+    def feed_input(self, action_input: ActionInput) -> None:
         EventBus.emit(LoggingEvent(message=f"PlayerActionController.feed_input: {game_action}", level=LogLevel.DEBUG))
-        self.last_action = EntityAction(
-            move=game_action.move,
-            pick=game_action.pick
+        move = Vector(0, 0)
+        if action_input.left:
+            move += Vector(-1, 0)
+        if action_input.right:
+            move += Vector(1, 0)
+        if action_input.up:
+            move += Vector(0, -1)
+        if action_input.down:
+            move += Vector(0, 1)
+        self.last_action = AliveActionEntity(
+            move=move,
+            pick=action_input.pick
         )
 
-    def get_action(self) -> EntityAction:
+    def get_action(self) -> AliveActionEntity:
         return self.last_action

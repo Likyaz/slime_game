@@ -16,24 +16,19 @@ class GameKey:
 
 @dataclass(frozen=True)
 class GameActionInput(ActionInput):
-    move: Vector
+    left: bool
+    right: bool
+    up: bool
+    down: bool
     pick: bool
 
 class GameInputSystem(InputSystem):
     @staticmethod
     def handle(raw_input: RawInput) -> GameActionInput:
-        keys = raw_input.keys
-        move = Vector.zero()
-        if keys[GameKey.LEFT]:
-            move += Vector(-1, 0)
-        if keys[GameKey.RIGHT]:
-            move += Vector(1, 0)
-        if keys[GameKey.UP]:
-            move += Vector(0, -1)
-        if keys[GameKey.DOWN]:
-            move += Vector(0, 1)
         return GameActionInput(
-            move=move,
-            pick=keys[GameKey.PICK]
+            left=raw_input.keys[GameKey.LEFT],
+            right=raw_input.keys[GameKey.RIGHT],
+            up=raw_input.keys[GameKey.UP],
+            down=raw_input.keys[GameKey.DOWN],
+            pick=raw_input.keys[GameKey.PICK]
         )
-

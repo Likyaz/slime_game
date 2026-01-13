@@ -2,7 +2,7 @@ import random
 
 from systems.ia_components.ia_component import IAComponent
 from systems.vector import Vector
-from systems.actions.action import EntityAction
+from systems.actions.action.alive import AliveActionEntity
 from systems.actions.controller.ia import EntityPerception
 
 
@@ -27,7 +27,7 @@ class SlimeIA(IAComponent):
         self.rotation_speed += self.rotation_acc
         self.rotation_speed = max(-0.3, min(self.rotation_speed, 0.3))
         self.target_direction = self.target_direction.add_angle_random(-self.rotation_speed , self.rotation_speed)
-        return EntityAction(
+        return AliveActionEntity(
             move=self.target_direction,
             pick=False
         )

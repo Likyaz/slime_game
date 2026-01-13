@@ -1,13 +1,9 @@
 from dataclasses import dataclass, field
-from abc import ABC
 from systems.vector import Vector
-
-
-class Action(ABC):
-    pass
+from systems.actions.action import ActionEntity
 
 
 @dataclass(frozen=True, slots=True)
-class EntityAction(Action):
+class AliveActionEntity(ActionEntity):
     move: Vector = field(default_factory=lambda: Vector(0, 0))
     pick: bool = False

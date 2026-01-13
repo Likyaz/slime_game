@@ -13,7 +13,7 @@ from systems.audio.entity import AudioEntity
 from systems.audio.synth.sound import SynthSound
 from systems.audio.play_policy import PlayPolicy
 from systems.audio.synth.wave_type import WaveType
-
+from systems.actions.action.alive import AliveActionEntity
 import settings
 
 
@@ -29,6 +29,7 @@ class EntityFactory:
             }),
             action_controller=PlayerActionController(),
             action_system=AliveActionSystem,
+            entity_action=AliveActionEntity(),
             entity_type=EntityType.PLAYER
         )
 
@@ -40,6 +41,7 @@ class EntityFactory:
             graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleGraphicSurface(radius=settings.ENTITY_RADIUS), color=(255, 0, 0), z_index=90),
             action_controller=AIActionController(SlimeIA()),
             action_system=AliveActionSystem,
+            entity_action=AliveActionEntity(),
             entity_type=EntityType.SLIME
         )
 

@@ -3,16 +3,16 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Type
 
 
-from systems.actions.action import EntityAction
+from systems.actions.action import ActionEntity
 from entities.entity_type import EntityType
 
 if TYPE_CHECKING:
-    from systems.actions.action_system import ActionSystem
+    from systems.actions.system import ActionSystem
     from systems.physics import PhysicEntity
     from systems.graphic import GraphicEntity
     from systems.audio.entity import AudioEntity
     # from systems.items import InventoryComponent
-    from systems.actions.action_controller import ActionController
+    from systems.actions.controller import ActionController
 
 
 class Entity:
@@ -24,6 +24,7 @@ class Entity:
         # inventory_component: InventoryComponent = None,
         action_controller: ActionController = None,
         action_system: Type[ActionSystem] = None,
+        entity_action: ActionEntity = None,
         entity_type: EntityType = EntityType.NONE,
     ):
         self.physics_entity = physics_entity
@@ -32,5 +33,5 @@ class Entity:
         # self.inventory_component = inventory_component
         self.entity_type = entity_type
         self.action_controller = action_controller
-        self.entity_action = EntityAction()
+        self.entity_action = entity_action
         self.action_system = action_system
