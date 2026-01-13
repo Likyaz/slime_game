@@ -3,7 +3,8 @@ import random
 from systems.ia_components.ia_component import IAComponent
 from systems.vector import Vector
 from systems.actions.action import EntityAction
-from systems.actions.action_controller import EntityPerception
+from systems.actions.controller.ia import EntityPerception
+
 
 class SlimeIA(IAComponent):
     def __init__(self):

@@ -25,13 +25,13 @@ class GameInputSystem(InputSystem):
         keys = raw_input.keys
         move = Vector.zero()
         if keys[GameKey.LEFT]:
-            move = Vector(-1, 0)
+            move += Vector(-1, 0)
         if keys[GameKey.RIGHT]:
-            move = Vector(1, 0)
+            move += Vector(1, 0)
         if keys[GameKey.UP]:
-            move = Vector(0, -1)
+            move += Vector(0, -1)
         if keys[GameKey.DOWN]:
-            move = Vector(0, 1)
+            move += Vector(0, 1)
         return GameActionInput(
             move=move,
             pick=keys[GameKey.PICK]

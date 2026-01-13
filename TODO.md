@@ -16,9 +16,9 @@
 - [ ] Refactor for framework transformation: input
 - [ ] Refactor for framework transformation: audio
 - [ ] Refactor for framework transformation: items
-- [ ] refacto actions 
+- [X] refacto actions 
 - [ ] refacto ia_components
-- [ ] refacto inputs
+- [X] refacto inputs
 - [ ] make more sound class for Synth 
 - [ ] refactor `physic/entity.py`
 - [ ] Create module math

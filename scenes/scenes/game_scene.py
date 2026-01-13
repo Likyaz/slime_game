@@ -11,7 +11,7 @@ from systems.graphics.system.top_view_2d import TopView2DGraphicSystem
 from entities.entity_manager import EntityManager
 from entities.entity_factory import EntityFactory
 from scenes.scene import register_scene
-from systems.actions.action_system import ActionSystemManager
+from systems.actions.manager import ActionSystemManager
 from systems.audio.audio_system_manager import AudioSystemManager
 from systems.audio.synth.source import SynthAudioSource
 import settings

@@ -1,13 +1,8 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING
 
-from systems.actions.action_controller import ActionController
-from systems.event_bus import EventBus
-from systems.event_bus.event.audio import PlaySoundEvent
-import settings
-
+from systems.actions.controller import ActionController
 
 if TYPE_CHECKING:
     from entities.entity import Entity
@@ -37,26 +32,3 @@ class ActionSystemManager:
                 entity.entity_action = entity_action
 
             entity.action_system.apply_action(dt, entity)
-
-
-
-class ActionSystem(ABC):
-    @classmethod
-    @abstractmethod
-    def apply_actions(self, dt: float, entities: list[Entity]) -> None:
-        raise NotImplementedError
-
-
-class AliveActionSystem(ActionSystem):
-    @classmethod
-    def apply_action(self, dt: float, entity: Entity) -> None:
-        move_normalized = entity.entity_action.move.normalize()
-        acc = move_normalized * settings.ENTITY_ACCELERATION
-
-        if entity.entity_action.move.length > 0:
-            EventBus.emit(PlaySoundEvent(key_sound="walk", entity=entity))
-
-        if entity.entity_action.move.length > acc.length:
-            entity.physics_entity.acc = entity.entity_action.move
-        else:
-            entity.physics_entity.acc = acc

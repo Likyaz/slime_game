@@ -4,8 +4,9 @@ from systems.physics.entity import PhysicEntity
 from systems.physics.surface import CirclePhysicSurface, RectPhysicSurface, RotatedRectPhysicSurface
 from systems.graphics.entity import GraphicEntity
 from systems.graphics.surface import CircleGraphicSurface, RectGraphicSurface, RotatedRectGraphicSurface
-from systems.actions.action_controller import PlayerActionController, AIActionController
-from systems.actions.action_system import AliveActionSystem
+from systems.actions.controller.player import PlayerActionController
+from systems.actions.system.alive import AliveActionSystem
+from systems.actions.controller.ia import AIActionController
 from entities.entity_type import EntityType
 from systems.ia_components.slime_ia import SlimeIA
 from systems.audio.entity import AudioEntity
