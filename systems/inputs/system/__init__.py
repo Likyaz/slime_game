@@ -3,10 +3,10 @@ from abc import ABC, abstractmethod
 from systems.inputs.raw_input import RawInput
 
 
-class ActionInput(ABC):
+class InputEntity(ABC):
     pass
 
 class InputSystem(ABC):
     @abstractmethod
-    def handle(self, raw_input: RawInput) -> ActionInput:
+    def handle(self, raw_input: RawInput) -> InputEntity:
         raise NotImplementedError

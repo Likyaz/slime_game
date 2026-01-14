@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import pygame
 
 from systems.vector import Vector
-from systems.inputs.system import ActionInput, InputSystem
+from systems.inputs.system import InputEntity, InputSystem
 from systems.inputs.raw_input import RawInput
 
 
@@ -15,7 +15,7 @@ class GameKey:
     PICK = pygame.K_e
 
 @dataclass(frozen=True)
-class GameActionInput(ActionInput):
+class GameInputEntity(InputEntity):
     left: bool
     right: bool
     up: bool
@@ -24,8 +24,8 @@ class GameActionInput(ActionInput):
 
 class GameInputSystem(InputSystem):
     @staticmethod
-    def handle(raw_input: RawInput) -> GameActionInput:
-        return GameActionInput(
+    def handle(raw_input: RawInput) -> GameInputEntity:
+        return GameInputEntity(
             left=raw_input.keys[GameKey.LEFT],
             right=raw_input.keys[GameKey.RIGHT],
             up=raw_input.keys[GameKey.UP],

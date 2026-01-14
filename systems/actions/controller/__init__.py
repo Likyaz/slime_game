@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from systems.actions.action import ActionEntity
-from systems.inputs.system import ActionInput
+from systems.inputs.system import InputEntity
 
 
 class ActionController(ABC):
@@ -14,5 +14,5 @@ class ActionController(ABC):
 
 class InputActionController(ActionController):
     @abstractmethod
-    def feed_input(self, action_input: ActionInput) -> None:
+    def feed_input(self, action_input: InputEntity) -> None:
         pass
