@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Type
 
-
-from systems.actions.action import ActionEntity
 from entities.entity_type import EntityType
+
 
 if TYPE_CHECKING:
     from systems.actions.system import ActionSystem
@@ -24,7 +23,6 @@ class Entity:
         # inventory_component: InventoryComponent = None,
         action_controller: ActionController = None,
         action_system: Type[ActionSystem] = None,
-        entity_action: ActionEntity = None,
         entity_type: EntityType = EntityType.NONE,
     ):
         self.physics_entity = physics_entity
@@ -33,5 +31,9 @@ class Entity:
         # self.inventory_component = inventory_component
         self.entity_type = entity_type
         self.action_controller = action_controller
-        self.entity_action = entity_action
         self.action_system = action_system
+
+        if action_controller:
+            self.entity_action = action_controller.get_default_action()
+        else:
+            self.entity_action = None

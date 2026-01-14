@@ -29,7 +29,6 @@ class EntityFactory:
             }),
             action_controller=PlayerActionController(),
             action_system=AliveActionSystem,
-            entity_action=AliveActionEntity(),
             entity_type=EntityType.PLAYER
         )
 
@@ -41,7 +40,6 @@ class EntityFactory:
             graphic_entity=GraphicEntity(position=Vector(x, y), surface=CircleGraphicSurface(radius=settings.ENTITY_RADIUS), color=(255, 0, 0), z_index=90),
             action_controller=AIActionController(SlimeIA()),
             action_system=AliveActionSystem,
-            entity_action=AliveActionEntity(),
             entity_type=EntityType.SLIME
         )
 

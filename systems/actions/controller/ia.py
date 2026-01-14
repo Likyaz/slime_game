@@ -25,5 +25,8 @@ class AIActionController(ActionController):
     def update_perception(self, perception: EntityPerception) -> None:
         self.perception = perception
 
+    def get_default_action(self) -> AliveActionEntity:
+        return AliveActionEntity()
+
     def get_action(self) -> AliveActionEntity:
         return self.ia_component.action(self.perception)
