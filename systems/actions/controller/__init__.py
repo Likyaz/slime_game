@@ -11,8 +11,3 @@ class ActionController(ABC):
     @abstractmethod
     def get_action(self) -> ActionEntity:
         pass
-
-class InputActionController(ActionController):
-    @abstractmethod
-    def feed_input(self, action_input: InputEntity) -> None:
-        pass

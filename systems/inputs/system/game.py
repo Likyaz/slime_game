@@ -2,7 +2,6 @@ from dataclasses import dataclass
 
 import pygame
 
-from systems.vector import Vector
 from systems.inputs.system import InputEntity, InputSystem
 from systems.inputs.raw_input import RawInput
 
@@ -32,3 +31,13 @@ class GameInputSystem(InputSystem):
             down=raw_input.keys[GameKey.DOWN],
             pick=raw_input.keys[GameKey.PICK]
         )
+
+    @staticmethod
+    def is_empty(input_entity: GameInputEntity) -> bool:
+        return not any([
+            input_entity.left,
+            input_entity.right,
+            input_entity.up,
+            input_entity.down,
+            input_entity.pick
+        ])

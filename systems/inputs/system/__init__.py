@@ -10,3 +10,7 @@ class InputSystem(ABC):
     @abstractmethod
     def handle(self, raw_input: RawInput) -> InputEntity:
         raise NotImplementedError
+
+    @abstractmethod
+    def is_empty(self, input_entity: InputEntity) -> bool:
+        raise NotImplementedError

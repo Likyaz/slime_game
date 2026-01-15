@@ -1,7 +1,7 @@
 from scenes.scene import Scene
 import pygame
 
-from systems.inputs.manager import RawInput
+from systems.inputs.raw_input import RawInput
 from systems.inputs.manager import InputSystemManager
 from systems.inputs.system.game import GameInputSystem
 from systems.physics.manager import PhysicSystemManager
@@ -24,7 +24,7 @@ class GameScene(Scene):
         self.physics_system_manager = PhysicSystemManager(TopDownPhysicsSystem())
         self.graphic_system_manager = GraphicSystemManager(TopView2DGraphicSystem())
         self.action_system_manager = ActionSystemManager()
-        self.input_system_manager = InputSystemManager(GameInputSystem())
+        self.input_system_manager = InputSystemManager(GameInputSystem(), has_ui=True)
         self.audio_system = AudioSystemManager()
         self.audio_system.register_audio_source(SynthAudioSource)
 
@@ -75,8 +75,7 @@ class GameScene(Scene):
         super().quit()
 
     def handle_events(self, raw_input: RawInput) -> None:
-        game_action = self.input_system_manager.handle(raw_input)
-        self.player.action_controller.feed_input(game_action)
+        self.input_system_manager.handle(raw_input)
         # if game_action.open_inventory:
         #     self.next_scene = "inventory"
 
@@ -89,5 +88,3 @@ class GameScene(Scene):
     def draw(self, screen: pygame.Surface) -> None:
         screen.fill((0, 0, 0))
         self.graphic_system_manager.draw_all(screen)
-
-

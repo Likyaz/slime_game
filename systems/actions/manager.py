@@ -31,4 +31,5 @@ class ActionSystemManager:
                 entity_action = entity.action_controller.get_action()
                 entity.entity_action = entity_action
 
-            entity.action_system.apply_action(dt, entity)
+            if entity.action_system is not None:
+                entity.action_system.apply_action(dt, entity)

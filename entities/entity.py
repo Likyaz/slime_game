@@ -7,8 +7,8 @@ from entities.entity_type import EntityType
 
 if TYPE_CHECKING:
     from systems.actions.system import ActionSystem
-    from systems.physics import PhysicEntity
-    from systems.graphic import GraphicEntity
+    from systems.physics.entity import PhysicEntity
+    from systems.graphics.entity import GraphicEntity
     from systems.audio.entity import AudioEntity
     # from systems.items import InventoryComponent
     from systems.actions.controller import ActionController
@@ -37,3 +37,18 @@ class Entity:
             self.entity_action = action_controller.get_default_action()
         else:
             self.entity_action = None
+
+    def __repr__(self):
+        return (
+            "Entity(\n"
+            f"  physics_entity={self.physics_entity},\n"
+            f"  graphic_entity={self.graphic_entity},\n"
+            f"  audio_entity={self.audio_entity},\n"
+            f"  entity_type={self.entity_type},\n"
+            f"  action_controller={self.action_controller},\n"
+            f"  action_system={self.action_system}\n"
+            ")"
+        )
+    
+    def __str__(self):
+        return self.__repr__()
