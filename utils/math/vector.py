@@ -20,6 +20,10 @@ class Vector:
         length = random.uniform(min_length, max_length)
         return Vector(math.cos(angle) * length, math.sin(angle) * length)
 
+    @staticmethod
+    def dot(a: "Vector", b: "Vector") -> float:
+        return a.x * b.x + a.y * b.y
+
     x: float = 0
     y: float = 0
 
@@ -39,11 +43,14 @@ class Vector:
     def add_angle_random(self, min_angle: float = 0, max_angle: float = 2 * math.pi) -> "Vector":
         angle = random.uniform(min_angle, max_angle)
         return self.add_angle(angle)
+    
+    def dot(self, other: "Vector") -> float:
+        return self.x * other.x + self.y * other.y
 
     @property
     def length(self) -> float:
         return math.sqrt(self.x**2 + self.y**2)
-    
+
     @property
     def arg(self) -> float:
         return math.atan2(self.y, self.x)
@@ -93,6 +100,9 @@ class Vector:
     __imul__ = __mul__
     __iadd__ = __add__
     __isub__ = __sub__
+
+    def __neg__(self) -> "Vector":
+        return Vector(-self.x, -self.y)
 
     def __str__(self) -> str:
         return f"Vector({self.x}, {self.y})"

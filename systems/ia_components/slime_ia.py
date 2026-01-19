@@ -1,7 +1,7 @@
 import random
 
 from systems.ia_components.ia_component import IAComponent
-from systems.vector import Vector
+from utils.math.vector import Vector
 from systems.actions.action.alive import AliveActionEntity
 from systems.actions.controller.ia import EntityPerception
 

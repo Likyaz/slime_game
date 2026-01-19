@@ -1,13 +1,13 @@
 from systems.physics.system import PhysicSystem
 from systems.physics.entity import PhysicEntity
-from systems.physics.surface import CollisionEntity, select_collision_resolution
-from systems.vector import Vector
+from utils.math.collision import resolve_collision, compute_aabb
+from utils.math.vector import Vector
 import settings
 
 from collections import defaultdict
 
 
-class TopDownPhysicsSystem(PhysicSystem):
+class Primitive2DPhysicsSystem(PhysicSystem):
     class KeySortFunction(PhysicSystem.KeySortFunction):
         def __call__(self, entity: PhysicEntity) -> tuple:
             return entity.fixed, entity.mass * -1
@@ -33,20 +33,19 @@ class TopDownPhysicsSystem(PhysicSystem):
             for i, j in potential_pairs:
                 entity1 = entities[i]
                 entity2 = entities[j]
-                penetration = select_collision_resolution(
-                    CollisionEntity(position=entity1.position, surface=entity1.surface, mass=entity1.mass, fixed=entity1.fixed),
-                    CollisionEntity(position=entity2.position, surface=entity2.surface, mass=entity2.mass, fixed=entity2.fixed)
+                detected, correction_a, correction_b = resolve_collision(
+                    entity1.position, entity1.surface, entity2.position, entity2.surface
                 )
-                if penetration.x != 0 or penetration.y != 0:
+                if detected and (correction_a.x != 0 or correction_a.y != 0):
                     if not entity1.fixed and entity2.fixed:
-                        corrections[i] += penetration
+                        corrections[i] += correction_a
                     elif entity1.fixed and not entity2.fixed:
-                        corrections[j] -= penetration
+                        corrections[j] += correction_b
                     else:
                         ratio1 = entity1.mass / (entity1.mass + entity2.mass)
                         ratio2 = 1 - ratio1
-                        corrections[i] += penetration * ratio2
-                        corrections[j] -= penetration * ratio1
+                        corrections[i] += correction_a * ratio2
+                        corrections[j] += correction_b * ratio1
             
             for i, correction in corrections.items():
                 if not entities[i].fixed:
@@ -69,7 +68,7 @@ class TopDownPhysicsSystem(PhysicSystem):
         return index
 
     def _insert_entity_in_spatial_index(self, index: defaultdict[tuple[int, int], list[int]], entity_id: int, entities: list[PhysicEntity]) -> None:
-        min_x, min_y, max_x, max_y = entities[entity_id].aabb()
+        min_x, min_y, max_x, max_y = compute_aabb(entities[entity_id].position, entities[entity_id].surface)
 
         cx0 = int(min_x // settings.SPATIAL_CELL_SIZE)
         cy0 = int(min_y // settings.SPATIAL_CELL_SIZE)

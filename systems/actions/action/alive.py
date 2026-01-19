@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from systems.vector import Vector
+from utils.math.vector import Vector
 from systems.actions.action import ActionEntity
 
 

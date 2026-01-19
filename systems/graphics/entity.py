@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from systems.vector import Vector
-from systems.graphics.surface import GraphicSurface
+from utils.math.vector import Vector
+from utils.math.primitive_surface import PrimitiveSurface
 
 @dataclass(slots=True)
 class GraphicEntity:
     position: Vector
-    surface: GraphicSurface
+    surface: PrimitiveSurface
     z_index: int = 1
     color: tuple[int, int, int] = (255, 255, 255)

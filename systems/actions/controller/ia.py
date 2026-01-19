@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from systems.vector import Vector
+from utils.math.vector import Vector
 from entities.entity_type import EntityType
 from systems.actions.controller import ActionController
 from systems.actions.action.alive import AliveActionEntity

@@ -2,7 +2,7 @@ import math
 
 import pytest
 
-from systems.vector import Vector
+from utils.math.vector import Vector
 
 
 @pytest.fixture

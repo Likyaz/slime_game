@@ -3,7 +3,7 @@ from systems.actions.action.alive import AliveActionEntity
 from systems.inputs.system.game import GameInputEntity
 from systems.event_bus import EventBus
 from systems.event_bus.channel_event import ChannelEvent
-from systems.vector import Vector
+from utils.math.vector import Vector
 
 
 class PlayerActionController(ActionController):

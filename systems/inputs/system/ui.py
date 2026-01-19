@@ -5,7 +5,7 @@ import pygame
 
 from systems.inputs.system import InputEntity, InputSystem
 from systems.inputs.raw_input import RawInput
-from systems.vector import Vector
+from utils.math.vector import Vector
 
 
 class UIKey:

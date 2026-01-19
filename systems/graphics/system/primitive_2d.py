@@ -2,12 +2,12 @@ import pygame
 
 from systems.graphics.system import GraphicSystem
 from systems.graphics.entity import GraphicEntity
-from systems.graphics.surface import RectGraphicSurface, RotatedRectGraphicSurface, CircleGraphicSurface
-from systems.vector import Vector
+from utils.math.primitive_surface import RectPrimitiveSurface, RotatedRectPrimitiveSurface, CirclePrimitiveSurface
+from utils.math.vector import Vector
 import math
 
 
-class TopView2DGraphicSystem(GraphicSystem):
+class Primitive2DGraphicSystem(GraphicSystem):
     class KeySortFunction(GraphicSystem.KeySortFunction):
         def __call__(self, entity: GraphicEntity) -> tuple:
             return entity.z_index
@@ -16,9 +16,9 @@ class TopView2DGraphicSystem(GraphicSystem):
 
     def draw_all(self, screen: pygame.Surface, entities: list[GraphicEntity]) -> None:
         for entity in entities:
-            if isinstance(entity.surface, CircleGraphicSurface):
+            if isinstance(entity.surface, CirclePrimitiveSurface):
                 pygame.draw.circle(screen, entity.color, entity.position.to_tuple(), entity.surface.radius)
-            elif isinstance(entity.surface, RectGraphicSurface):
+            elif isinstance(entity.surface, RectPrimitiveSurface):
                 rect = pygame.Rect(
                     int(entity.position.x - entity.surface.width / 2),
                     int(entity.position.y - entity.surface.height / 2),
@@ -26,7 +26,7 @@ class TopView2DGraphicSystem(GraphicSystem):
                     int(entity.surface.height),
                 )
                 pygame.draw.rect(screen, entity.color, rect)
-            elif isinstance(entity.surface, RotatedRectGraphicSurface):
+            elif isinstance(entity.surface, RotatedRectPrimitiveSurface):
                 hw = entity.surface.width / 2
                 hh = entity.surface.height / 2
                 angle = entity.surface.rotation

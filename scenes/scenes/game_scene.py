@@ -5,9 +5,9 @@ from systems.inputs.raw_input import RawInput
 from systems.inputs.manager import InputSystemManager
 from systems.inputs.system.game import GameInputSystem
 from systems.physics.manager import PhysicSystemManager
-from systems.physics.system.top_down import TopDownPhysicsSystem
+from systems.physics.system.primitive_2d import Primitive2DPhysicsSystem
 from systems.graphics.manager import GraphicSystemManager
-from systems.graphics.system.top_view_2d import TopView2DGraphicSystem
+from systems.graphics.system.primitive_2d import Primitive2DGraphicSystem
 from entities.entity_manager import EntityManager
 from entities.entity_factory import EntityFactory
 from scenes.scene import register_scene
@@ -21,8 +21,8 @@ import settings
 class GameScene(Scene):
     def __init__(self):
         super().__init__()
-        self.physics_system_manager = PhysicSystemManager(TopDownPhysicsSystem())
-        self.graphic_system_manager = GraphicSystemManager(TopView2DGraphicSystem())
+        self.physics_system_manager = PhysicSystemManager(Primitive2DPhysicsSystem())
+        self.graphic_system_manager = GraphicSystemManager(Primitive2DGraphicSystem())
         self.action_system_manager = ActionSystemManager()
         self.input_system_manager = InputSystemManager(GameInputSystem(), has_ui=True)
         self.audio_system = AudioSystemManager()
