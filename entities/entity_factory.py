@@ -7,6 +7,7 @@ from utils.math.primitive_surface import (
 )
 from systems.physics.entity import PhysicEntity
 from systems.graphics.entity import GraphicEntity
+from systems.graphics.system import RenderSystemID
 from systems.actions.controller.player import PlayerActionController
 from systems.actions.system.alive import AliveActionSystem
 from systems.actions.controller.ia import AIActionController
@@ -26,7 +27,13 @@ class EntityFactory:
     def create_player(x: float, y: float) -> Entity:
         return Entity(
             physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=40),
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS), color=(0, 255, 0), z_index=100),
+            graphic_entity=GraphicEntity(
+                position=Vector(x, y),
+                surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS),
+                color=(0, 255, 0),
+                z_index=100,
+                system_id=RenderSystemID.WORLD,
+            ),
             audio_entity=AudioEntity({
                 "walk": SynthSound(freq=440, amp=1, duration=0.2, wave_type=WaveType.SIN, play_policy=PlayPolicy.RESTART)
             }),
