@@ -13,6 +13,11 @@ from entities.entity_manager import EntityManager
 from entities.entity_factory import EntityFactory
 from scenes.scene import register_scene
 from systems.actions.manager import ActionSystemManager
+from systems.actions.action_entity import ActionControllerID, ActionSystemID
+from systems.actions.controller.player import PlayerActionController
+from systems.actions.controller.ia import AIActionController
+from systems.actions.system.alive import AliveActionSystem
+from systems.ia_components.slime_ia import SlimeIA
 from systems.audio.audio_system_manager import AudioSystemManager
 from systems.audio.synth.source import SynthAudioSource
 import settings
@@ -27,7 +32,15 @@ class GameScene(Scene):
             {RenderSystemID.WORLD: Primitive2DGraphicSystem()},
             default_system=RenderSystemID.WORLD,
         )
-        self.action_system_manager = ActionSystemManager()
+        self.action_system_manager = ActionSystemManager(
+            controller_registry={
+                ActionControllerID.PLAYER: PlayerActionController,
+                ActionControllerID.AI_SLIME: lambda: AIActionController(SlimeIA()),
+            },
+            system_registry={
+                ActionSystemID.ALIVE: AliveActionSystem,
+            },
+        )
         self.input_system_manager = InputSystemManager(GameInputSystem(), has_ui=True)
         self.audio_system = AudioSystemManager()
         self.audio_system.register_audio_source(SynthAudioSource)

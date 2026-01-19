@@ -1,5 +1,5 @@
 from abc import ABC
 
 
-class ActionEntity(ABC):
+class Action(ABC):
     pass

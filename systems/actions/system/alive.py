@@ -8,13 +8,16 @@ import settings
 class AliveActionSystem(ActionSystem):
     @classmethod
     def apply_action(self, dt: float, entity: Entity) -> None:
-        move_normalized = entity.entity_action.move.normalize()
-        acc = move_normalized * settings.ENTITY_ACCELERATION
+        if entity.action_entity.current_action is None:
+            return
+        move = entity.action_entity.current_action.move
+        move_normalized = move.normalize()
+        acc_max = move_normalized * settings.ENTITY_ACCELERATION
 
-        if entity.entity_action.move.length > 0:
+        if move.length > 0:
             EventBus.emit(PlaySoundEvent(key_sound="walk", entity=entity))
 
-        if entity.entity_action.move.length > acc.length:
-            entity.physics_entity.acc = entity.entity_action.move
+        if move.length > acc_max.length:
+            entity.physics_entity.acc = move
         else:
-            entity.physics_entity.acc = acc
+            entity.physics_entity.acc = acc_max

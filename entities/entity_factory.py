@@ -17,7 +17,7 @@ from systems.audio.entity import AudioEntity
 from systems.audio.synth.sound import SynthSound
 from systems.audio.play_policy import PlayPolicy
 from systems.audio.synth.wave_type import WaveType
-from systems.actions.action.alive import AliveActionEntity
+from systems.actions.action_entity import ActionEntity, ActionControllerID, ActionSystemID
 import settings
 
 
@@ -37,8 +37,10 @@ class EntityFactory:
             audio_entity=AudioEntity({
                 "walk": SynthSound(freq=440, amp=1, duration=0.2, wave_type=WaveType.SIN, play_policy=PlayPolicy.RESTART)
             }),
-            action_controller=PlayerActionController(),
-            action_system=AliveActionSystem,
+            action_entity=ActionEntity(
+                controller_id=ActionControllerID.PLAYER,
+                system_id=ActionSystemID.ALIVE,
+            ),
             entity_type=EntityType.PLAYER
         )
 
@@ -48,8 +50,10 @@ class EntityFactory:
         return Entity(
             physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=1),
             graphic_entity=GraphicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS), color=(255, 0, 0), z_index=90),
-            action_controller=AIActionController(SlimeIA()),
-            action_system=AliveActionSystem,
+            action_entity=ActionEntity(
+                controller_id=ActionControllerID.AI_SLIME,
+                system_id=ActionSystemID.ALIVE,
+            ),
             entity_type=EntityType.SLIME
         )
 

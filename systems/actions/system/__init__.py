@@ -5,6 +5,6 @@ from entities.entity import Entity
 class ActionSystem(ABC):
     @classmethod
     @abstractmethod
-    def apply_actions(self, dt: float, entities: list[Entity]) -> None:
+    def apply_action(self, dt: float, entity: Entity) -> None:
         raise NotImplementedError
 
