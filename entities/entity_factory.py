@@ -62,7 +62,7 @@ class EntityFactory:
     @staticmethod
     def create_visual_rect(x: float, y: float, width: float = 10, height: float = 10) -> Entity:
         return Entity(
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectPrimitiveSurface(width=width, height=height), color=(255, 0, 255), z_index=95),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectPrimitiveSurface(width=width, height=height), color=(255, 0, 255), z_index=95, visible=False),
             entity_type=EntityType.VISUAL
         )
     

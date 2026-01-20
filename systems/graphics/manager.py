@@ -59,4 +59,5 @@ class GraphicSystemManager:
     def draw_all(self, screen: pygame.Surface) -> None:
         for system_id, system in sorted(self.graphic_systems.items(), key=lambda kv: kv[1].priority):
             entities = self.entities_by_system.get(system_id, [])
-            system.draw_all(screen, entities)
+            visible_entities = (entity for entity in entities if entity.visible)
+            system.draw_all(screen, visible_entities)

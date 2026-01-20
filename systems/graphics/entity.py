@@ -14,5 +14,6 @@ class GraphicEntity:
     surface: PrimitiveSurface
     z_index: int = 1
     color: tuple[int, int, int] = (255, 255, 255)
+    visible: bool = True
     id: Optional[int] = None
     system_id: Optional["RenderSystemID"] = None
