@@ -57,11 +57,11 @@ class EntityManager:
             
             if entity.action_entity and entity.action_entity.controller and isinstance(entity.action_entity.controller, AIActionController):
                 entity.action_entity.controller.update_perception(EntityPerception(
-                    vel=entity.physics_entity.vel,
                     entities=[
                         EntityInfo(
                             type=e.entity_type,
-                            distance=e.physics_entity.position - entity.physics_entity.position
+                            distance=e.physics_entity.position - entity.physics_entity.position,
+                            entity=e
                         )
                         for e in self.entities
                         if e.physics_entity and isinstance(e.physics_entity, PhysicEntity) and e != entity

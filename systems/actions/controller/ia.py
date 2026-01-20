@@ -3,17 +3,18 @@ from utils.math.vector import Vector
 from entities.entity_type import EntityType
 from systems.actions.controller import ActionController
 from systems.actions.action.alive import AliveActionEntity
+from entities.entity import Entity
 
 
 @dataclass(frozen=True)
 class EntityInfo:
     type: EntityType
     distance: Vector
+    entity: Entity
 
 
 @dataclass(frozen=True)
 class EntityPerception:
-    vel: Vector
     entities: list[EntityInfo]
 
 

@@ -18,7 +18,7 @@ class SlimeIA(IAComponent):
         closest_slime = None
         closest_slime_distance = float('inf')
         for entity_info in entity_perception.entities:
-            if entity_info.type == EntityType.SLIME:
+            if entity_info.type == EntityType.SLIME and not entity_info.entity.data_entity.data_storage.dead:
                 if entity_info.distance.length < 100 and entity_info.distance.length < closest_slime_distance:
                     closest_slime = entity_info
                     closest_slime_distance = entity_info.distance.length
@@ -26,7 +26,9 @@ class SlimeIA(IAComponent):
         if closest_slime:
             return AliveActionEntity(
                 move=closest_slime.distance,
-                pick=False
+                pick=False,
+                target=closest_slime.entity,
+                attack=True
             )
 
         self.rotation_acc += random.uniform(-0.05, 0.05)
@@ -36,7 +38,9 @@ class SlimeIA(IAComponent):
         self.target_direction = self.target_direction.add_angle_random(-self.rotation_speed , self.rotation_speed)
         return AliveActionEntity(
             move=self.target_direction,
-            pick=False
+            pick=False,
+            target=None,
+            attack=False
         )
         # return EntityAction(
         #     move=Vector(0, 0),
