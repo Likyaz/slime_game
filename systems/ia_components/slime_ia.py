@@ -4,6 +4,7 @@ from systems.ia_components.ia_component import IAComponent
 from utils.math.vector import Vector
 from systems.actions.action.alive import AliveActionEntity
 from systems.actions.controller.ia import EntityPerception
+from entities.entity_type import EntityType
 
 
 class SlimeIA(IAComponent):
@@ -14,14 +15,20 @@ class SlimeIA(IAComponent):
 
 
     def action(self, entity_perception: EntityPerception):
-        # for entity_info in entity_perception.entities:
-            # if entity_info.type == EntityType.PLAYER:
-                # if entity_info.distance.length < 100:
-                #     return EntityAction(
-                #             move=entity_info.distance,
-                #             pick=False
-                #         )
-                # else:
+        closest_slime = None
+        closest_slime_distance = float('inf')
+        for entity_info in entity_perception.entities:
+            if entity_info.type == EntityType.SLIME:
+                if entity_info.distance.length < 100 and entity_info.distance.length < closest_slime_distance:
+                    closest_slime = entity_info
+                    closest_slime_distance = entity_info.distance.length
+
+        if closest_slime:
+            return AliveActionEntity(
+                move=closest_slime.distance,
+                pick=False
+            )
+
         self.rotation_acc += random.uniform(-0.05, 0.05)
         self.rotation_acc = max(-0.1, min(self.rotation_acc, 0.1))
         self.rotation_speed += self.rotation_acc

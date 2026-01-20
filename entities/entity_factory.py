@@ -18,6 +18,8 @@ from systems.audio.synth.sound import SynthSound
 from systems.audio.play_policy import PlayPolicy
 from systems.audio.synth.wave_type import WaveType
 from systems.actions.action_entity import ActionEntity, ActionControllerID, ActionSystemID
+from systems.data.entity import DataEntity
+from systems.data.storage.alive import AliveDataStorage
 import settings
 
 
@@ -41,6 +43,9 @@ class EntityFactory:
                 controller_id=ActionControllerID.PLAYER,
                 system_id=ActionSystemID.ALIVE,
             ),
+            data_entity=DataEntity(
+                data_storage=AliveDataStorage(max_life=100)
+            ),
             entity_type=EntityType.PLAYER
         )
 
@@ -53,6 +58,9 @@ class EntityFactory:
             action_entity=ActionEntity(
                 controller_id=ActionControllerID.AI_SLIME,
                 system_id=ActionSystemID.ALIVE,
+            ),
+            data_entity=DataEntity(
+                data_storage=AliveDataStorage(max_life=50)
             ),
             entity_type=EntityType.SLIME
         )

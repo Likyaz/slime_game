@@ -7,6 +7,7 @@ from systems.actions.manager import ActionSystemManager
 from systems.actions.action_entity import ActionEntity
 from systems.actions.controller.ia import AIActionController, EntityPerception, EntityInfo
 from systems.actions.action_entity import ActionControllerID
+from systems.data.storage.alive import AliveDataStorage
 
 
 class EntityManager:
@@ -45,7 +46,15 @@ class EntityManager:
             self.action_system_manager.remove_entity(entity)
 
     def update_all(self, dt: float) -> None:
+        entities_to_remove = []
+        
         for entity in self.entities:
+            if entity.data_entity and isinstance(entity.data_entity.data_storage, AliveDataStorage):
+                data = entity.data_entity.data_storage
+                if data.dead and data.time_before_delete < 0:
+                    entities_to_remove.append(entity)
+                    continue
+            
             if entity.action_entity and entity.action_entity.controller and isinstance(entity.action_entity.controller, AIActionController):
                 entity.action_entity.controller.update_perception(EntityPerception(
                     vel=entity.physics_entity.vel,
@@ -55,11 +64,14 @@ class EntityManager:
                             distance=e.physics_entity.position - entity.physics_entity.position
                         )
                         for e in self.entities
-                        if entity.physics_entity and isinstance(e.physics_entity, PhysicEntity)
+                        if e.physics_entity and isinstance(e.physics_entity, PhysicEntity) and e != entity
                     ]
                 ))
             if entity.physics_entity and isinstance(entity.physics_entity, PhysicEntity):
                 entity.graphic_entity.position = entity.physics_entity.position
+        
+        for entity in entities_to_remove:
+            self.remove_entity(entity)
 
     def cleanup(self) -> None:
         pass
