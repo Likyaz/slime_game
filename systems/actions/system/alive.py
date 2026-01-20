@@ -14,9 +14,7 @@ class AliveActionSystem(ActionSystem):
         data = entity.data_entity.data_storage
         if data.life <= 0:
             data.dead = True
-
-        if data.dead:
-            entity.graphic_entity.color = (0, 0, 255)
+            entity.graphic_entity.active_surface = "dead"
             data.time_before_delete -= dt
     
         # if no action or dead, return
@@ -31,6 +29,7 @@ class AliveActionSystem(ActionSystem):
                 target = entity.action_entity.current_action.target
                 if target and isinstance(target.data_entity.data_storage, AliveDataStorage):
                     target.data_entity.data_storage.life -= 1
+                entity.graphic_entity.active_surface = "attaque"
                 return
 
         # move gestion
@@ -40,6 +39,9 @@ class AliveActionSystem(ActionSystem):
 
         if move.length > 0:
             EventBus.emit(PlaySoundEvent(key_sound="walk", entity=entity))
+            entity.graphic_entity.active_surface = "walk"
+        else:
+            entity.graphic_entity.active_surface = "static"
 
         if move.length > acc_max.length:
             entity.physics_entity.acc = move

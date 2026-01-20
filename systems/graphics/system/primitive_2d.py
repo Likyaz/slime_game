@@ -16,20 +16,24 @@ class Primitive2DGraphicSystem(GraphicSystem):
 
     def draw_all(self, screen: pygame.Surface, entities: list[GraphicEntity]) -> None:
         for entity in entities:
-            if isinstance(entity.surface, CirclePrimitiveSurface):
-                pygame.draw.circle(screen, entity.color, entity.position.to_tuple(), entity.surface.radius)
-            elif isinstance(entity.surface, RectPrimitiveSurface):
+            surface = entity.surfaces[entity.active_surface]
+            if surface is None:
+                raise ValueError(f"No surface found for entity {entity.id}")
+
+            if isinstance(surface, CirclePrimitiveSurface):
+                pygame.draw.circle(screen, surface.color, entity.position.to_tuple(), surface.radius)
+            elif isinstance(surface, RectPrimitiveSurface):
                 rect = pygame.Rect(
-                    int(entity.position.x - entity.surface.width / 2),
-                    int(entity.position.y - entity.surface.height / 2),
-                    int(entity.surface.width),
-                    int(entity.surface.height),
+                    int(entity.position.x - surface.width / 2),
+                    int(entity.position.y - surface.height / 2),
+                    int(surface.width),
+                    int(surface.height),
                 )
-                pygame.draw.rect(screen, entity.color, rect)
-            elif isinstance(entity.surface, RotatedRectPrimitiveSurface):
-                hw = entity.surface.width / 2
-                hh = entity.surface.height / 2
-                angle = entity.surface.rotation
+                pygame.draw.rect(screen, surface.color, rect)
+            elif isinstance(surface, RotatedRectPrimitiveSurface):
+                hw = surface.width / 2
+                hh = surface.height / 2
+                angle = surface.rotation
                 cos_a = math.cos(angle)
                 sin_a = math.sin(angle)
                 corners = [

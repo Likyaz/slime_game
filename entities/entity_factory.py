@@ -20,6 +20,7 @@ from systems.audio.synth.wave_type import WaveType
 from systems.actions.action_entity import ActionEntity, ActionControllerID, ActionSystemID
 from systems.data.entity import DataEntity
 from systems.data.storage.alive import AliveDataStorage
+from systems.graphics.surface import CircleGraphicSurface, RectGraphicSurface
 import settings
 
 
@@ -29,12 +30,31 @@ class EntityFactory:
     def create_player(x: float, y: float) -> Entity:
         return Entity(
             physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=40),
+
             graphic_entity=GraphicEntity(
                 position=Vector(x, y),
-                surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS),
-                color=(0, 255, 0),
-                z_index=100,
                 system_id=RenderSystemID.WORLD,
+                visible=True,
+                z_index=100,
+                active_surface="static",
+                surfaces={
+                    "walk": CircleGraphicSurface(
+                        radius=settings.ENTITY_RADIUS,
+                        color=(0, 255, 0),
+                    ),
+                    "static": CircleGraphicSurface(
+                        radius=settings.ENTITY_RADIUS,
+                        color=(125, 125, 125),
+                    ),
+                    "dead": CircleGraphicSurface(
+                        radius=settings.ENTITY_RADIUS,
+                        color=(255, 0, 0),
+                    ),
+                    "attaque": CircleGraphicSurface(
+                        radius=settings.ENTITY_RADIUS,
+                        color=(0, 0, 255),
+                    ),
+                }
             ),
             audio_entity=AudioEntity({
                 "walk": SynthSound(freq=440, amp=1, duration=0.2, wave_type=WaveType.SIN, play_policy=PlayPolicy.RESTART)
@@ -54,13 +74,37 @@ class EntityFactory:
     def create_slime(x: float, y: float) -> Entity:
         return Entity(
             physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS), fixed=False, mass=1),
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=settings.ENTITY_RADIUS), color=(255, 0, 0), z_index=90),
             action_entity=ActionEntity(
                 controller_id=ActionControllerID.AI_SLIME,
                 system_id=ActionSystemID.ALIVE,
             ),
             data_entity=DataEntity(
                 data_storage=AliveDataStorage(max_life=50)
+            ),
+            graphic_entity=GraphicEntity(
+                position=Vector(x, y),
+                system_id=RenderSystemID.WORLD,
+                visible=True,
+                z_index=100,
+                active_surface="static",
+                surfaces={
+                    "walk": CircleGraphicSurface(
+                        radius=settings.ENTITY_RADIUS,
+                        color=(0, 255, 0),
+                    ),
+                    "static": CircleGraphicSurface(
+                        radius=settings.ENTITY_RADIUS,
+                        color=(125, 125, 125),
+                    ),
+                    "dead": CircleGraphicSurface(
+                        radius=settings.ENTITY_RADIUS,
+                        color=(255, 0, 0),
+                    ),
+                    "attaque": CircleGraphicSurface(
+                        radius=settings.ENTITY_RADIUS,
+                        color=(0, 0, 255),
+                    ),
+                }
             ),
             entity_type=EntityType.SLIME
         )
@@ -70,14 +114,14 @@ class EntityFactory:
     @staticmethod
     def create_visual_rect(x: float, y: float, width: float = 10, height: float = 10) -> Entity:
         return Entity(
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectPrimitiveSurface(width=width, height=height), color=(255, 0, 255), z_index=95, visible=False),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surfaces={"static": RectGraphicSurface(width=width, height=height, color=(255, 0, 255))}, active_surface="static", z_index=95, visible=False),
             entity_type=EntityType.VISUAL
         )
     
     @staticmethod
     def create_visual_circle(x: float, y: float, radius: float = 10) -> Entity:
         return Entity(
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=radius), color=(0, 0, 255), z_index=85),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surfaces={"static": CircleGraphicSurface(radius=radius, color=(0, 0, 255))}, active_surface="static", z_index=85),
             entity_type=EntityType.VISUAL
         )
 
@@ -86,7 +130,7 @@ class EntityFactory:
     def create_solid_rect(x: float, y: float, width: float = 10, height: float = 10) -> Entity:
         return Entity(
             physics_entity=PhysicEntity(position=Vector(x, y), surface=RectPrimitiveSurface(width=width, height=height), fixed=True),
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=RectPrimitiveSurface(width=width, height=height), color=(255, 0, 255)),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surfaces={"static": RectGraphicSurface(width=width, height=height, color=(255, 0, 255))}, active_surface="static"),
             entity_type=EntityType.SOLID
         )
 
@@ -102,6 +146,6 @@ class EntityFactory:
     def create_solid_circle(x: float, y: float, radius: float = 10) -> Entity:
         return Entity(
             physics_entity=PhysicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=radius), fixed=False),
-            graphic_entity=GraphicEntity(position=Vector(x, y), surface=CirclePrimitiveSurface(radius=radius), color=(0, 0, 255)),
+            graphic_entity=GraphicEntity(position=Vector(x, y), surfaces={"static": CircleGraphicSurface(radius=radius, color=(0, 0, 255))}, active_surface="static"),
             entity_type=EntityType.SOLID
         )
